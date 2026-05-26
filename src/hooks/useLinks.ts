@@ -148,10 +148,12 @@ export function useLinks() {
   }, [syncFromFile])
 
   const captureFromText = useCallback(
-    (text: string, defaultProject?: string): CaptureResult => {
+    (text: string, defaultProject?: string, defaultTagsRaw?: string): CaptureResult => {
       const lines = text.split(/\r?\n/)
+      const defaultTags = defaultTagsRaw?.trim() ? parseTags(defaultTagsRaw) : undefined
       const { links: nextLinks, added, duplicates, invalid } = captureLinksFromText(links, lines, {
         defaultProject: defaultProject?.trim() ? normalizeProject(defaultProject) : undefined,
+        defaultTags,
         source: 'paste',
       })
 

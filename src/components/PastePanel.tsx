@@ -3,7 +3,7 @@ import type { CaptureResult } from '../types'
 import { CollapseToggle } from './CollapseToggle'
 
 interface PastePanelProps {
-  onCapture: (text: string, defaultProject?: string) => CaptureResult
+  onCapture: (text: string, defaultProject?: string, defaultTags?: string) => CaptureResult
   lastCapture: CaptureResult | null
   projectOptions: string[]
   defaultCollapsed?: boolean
@@ -19,11 +19,12 @@ export function PastePanel({
   const [text, setText] = useState('')
   const [defaultProject, setDefaultProject] = useState('')
   const [customProject, setCustomProject] = useState('')
+  const [defaultTags, setDefaultTags] = useState('')
   const fileRef = useRef<HTMLInputElement>(null)
 
   const handleSave = () => {
     const project = customProject.trim() || defaultProject
-    const result = onCapture(text, project || undefined)
+    const result = onCapture(text, project || undefined, defaultTags.trim() || undefined)
     if (result.added > 0) {
       setText('')
       setCollapsed(true)
@@ -33,7 +34,7 @@ export function PastePanel({
   const handleFileImport = async (file: File) => {
     const content = await file.text()
     const project = customProject.trim() || defaultProject
-    const result = onCapture(content, project || undefined)
+    const result = onCapture(content, project || undefined, defaultTags.trim() || undefined)
     if (result.added > 0) {
       setCollapsed(true)
     }
@@ -51,7 +52,7 @@ export function PastePanel({
         >
           <div className="min-w-0">
             <span className="text-xs font-medium text-zinc-400">Capture</span>
-            <span className="ml-2 text-[11px] text-zinc-600">Paste URLs · import .txt</span>
+            <span className="ml-2 text-[11px] text-zinc-600">Paste URLs · tags · import .txt</span>
           </div>
           <CollapseToggle expanded={false} />
         </button>
@@ -101,6 +102,13 @@ export function PastePanel({
             className="min-w-[140px] flex-1 rounded-md border border-zinc-800/80 bg-zinc-950/80 px-2.5 py-2 text-sm text-zinc-200 placeholder:text-zinc-600"
           />
         </div>
+        <input
+          type="text"
+          value={defaultTags}
+          onChange={(e) => setDefaultTags(e.target.value)}
+          placeholder="Tags · mcp, agents, docs"
+          className="w-full rounded-md border border-zinc-800/80 bg-zinc-950/80 px-2.5 py-2 text-sm text-zinc-200 placeholder:text-zinc-600"
+        />
       </div>
 
       <textarea

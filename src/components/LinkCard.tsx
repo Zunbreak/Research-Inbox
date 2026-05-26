@@ -33,6 +33,7 @@ function statusLabel(status: LinkItem['status']): string {
 export function LinkCard({ link, projectOptions, onUpdate, onDelete, onFilter }: LinkCardProps) {
   const [editing, setEditing] = useState(false)
   const [projectDraft, setProjectDraft] = useState(link.project)
+  const [tagsDraft, setTagsDraft] = useState(formatTags(link.tags))
 
   const captured = formatCapturedAt(link.capturedAt)
 
@@ -47,6 +48,20 @@ export function LinkCard({ link, projectOptions, onUpdate, onDelete, onFilter }:
     link.project && !projectOptions.includes(link.project)
       ? [link.project, ...projectOptions]
       : projectOptions
+
+  const commitTags = () => {
+    const parsed = parseTags(tagsDraft)
+    const unchanged =
+      parsed.length === link.tags.length && parsed.every((tag, index) => tag === link.tags[index])
+    if (!unchanged) {
+      onUpdate(link.id, { tags: parsed })
+    }
+  }
+
+  const finishEditing = () => {
+    commitTags()
+    setEditing(false)
+  }
 
   const inputClass =
     'w-full rounded-md border border-zinc-800/80 bg-zinc-950/80 px-2.5 py-1.5 text-xs text-zinc-200 placeholder:text-zinc-600 focus:border-violet-500/50 focus:outline-none'
@@ -170,6 +185,7 @@ export function LinkCard({ link, projectOptions, onUpdate, onDelete, onFilter }:
               type="button"
               onClick={() => {
                 setProjectDraft(link.project)
+                setTagsDraft(formatTags(link.tags))
                 setEditing(true)
               }}
               className="rounded-md px-2.5 py-1 text-[11px] text-zinc-400 hover:bg-zinc-800 hover:text-zinc-200"
@@ -197,7 +213,7 @@ export function LinkCard({ link, projectOptions, onUpdate, onDelete, onFilter }:
         </span>
         <button
           type="button"
-          onClick={() => setEditing(false)}
+          onClick={finishEditing}
           className="rounded-md px-2 py-1 text-[11px] text-zinc-400 hover:bg-zinc-800 hover:text-zinc-200"
         >
           Done
@@ -280,9 +296,10 @@ export function LinkCard({ link, projectOptions, onUpdate, onDelete, onFilter }:
           <span className={labelClass}>Tags</span>
           <input
             type="text"
-            value={formatTags(link.tags)}
-            onChange={(e) => onUpdate(link.id, { tags: parseTags(e.target.value) })}
-            placeholder="mcp, agents, routing"
+            value={tagsDraft}
+            onChange={(e) => setTagsDraft(e.target.value)}
+            onBlur={commitTags}
+            placeholder="mcp, agents, docs"
             className={inputClass}
           />
         </label>

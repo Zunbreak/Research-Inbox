@@ -78,7 +78,7 @@ export function addCapturedLink(
 export function captureLinksFromText(
   links: LinkItem[],
   lines: string[],
-  options?: { defaultProject?: string; source?: LinkSource },
+  options?: { defaultProject?: string; defaultTags?: string[]; source?: LinkSource },
 ): { links: LinkItem[]; added: number; duplicates: number; invalid: number } {
   const existing = new Set(links.map((link) => normalizeUrl(link.url)))
   const nextLinks = [...links]
@@ -107,6 +107,7 @@ export function captureLinksFromText(
       url,
       source: options?.source ?? 'paste',
       project: options?.defaultProject,
+      tags: options?.defaultTags,
     })
     nextLinks.push(link)
     existing.add(key)
