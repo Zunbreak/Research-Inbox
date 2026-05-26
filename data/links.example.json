@@ -1,0 +1,23 @@
+{
+  "version": 1,
+  "savedAt": null,
+  "links": [
+    {
+      "id": "example-001",
+      "url": "https://developer.chrome.com/docs/extensions",
+      "title": "Chrome Extensions documentation",
+      "domain": "developer.chrome.com",
+      "capturedAt": "2026-01-01T12:00:00.000Z",
+      "status": "inbox",
+      "project": "Learning",
+      "tags": ["extension", "docs"],
+      "whySaved": "Reference for activeTab and permissions",
+      "description": "Learn how to build Chrome extensions",
+      "headings": ["Extensions", "Manifest V3"],
+      "selectedText": "activeTab gives temporary access when the user invokes the extension",
+      "source": "extension",
+      "capturedFrom": "brave-extension"
+    }
+  ],
+  "recentProjects": ["Learning"]
+}

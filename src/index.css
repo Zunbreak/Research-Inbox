@@ -1,0 +1,30 @@
+@import 'tailwindcss';
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: #0a0a0b;
+  color: #e4e4e7;
+  font-family: system-ui, -apple-system, 'Segoe UI', sans-serif;
+}
+
+#root {
+  min-height: 100vh;
+}
+
+input,
+textarea,
+select,
+button {
+  font: inherit;
+}
+
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #3f3f46;
+  border-radius: 3px;
+}

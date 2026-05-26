@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Save to Inbox</title>
+    <link rel="stylesheet" href="popup.css" />
+  </head>
+  <body>
+    <header>
+      <h1>Zunbreak Research Inbox</h1>
+      <p id="page-preview">Loading tab…</p>
+    </header>
+
+    <label class="field">
+      <span>Project</span>
+      <p class="field-hint">Choose existing · or enter a new name below</p>
+      <select id="project-select"></select>
+    </label>
+
+    <label class="field">
+      <span>New project name</span>
+      <input id="project-custom" type="text" placeholder="Optional" />
+    </label>
+
+    <label class="field">
+      <span>Tags</span>
+      <input id="tags" type="text" placeholder="mcp, docs, extension" />
+    </label>
+
+    <label class="field">
+      <span>Why saved</span>
+      <textarea
+        id="why-saved"
+        rows="2"
+        placeholder="Why this matters — most searchable later"
+      ></textarea>
+    </label>
+
+    <label class="checkbox">
+      <input id="include-selected" type="checkbox" checked />
+      <span>Include selected text from page</span>
+    </label>
+
+    <p id="meta-preview" class="meta-preview"></p>
+    <p id="status" class="status" aria-live="polite"></p>
+
+    <button id="save-btn" type="button">Save to Inbox</button>
+
+    <script src="popup.js"></script>
+  </body>
+</html>
