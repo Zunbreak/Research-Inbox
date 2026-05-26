@@ -1,13 +1,6 @@
 const INBOX_API = 'http://localhost:5173/api/capture-link'
-
-const DEFAULT_PROJECTS = [
-  'Work',
-  'Personal',
-  'Learning',
-  'Research',
-  'Inspiration',
-  'Unsorted',
-]
+const BACKUP_API = 'http://localhost:5173/api/backup'
+const DEFAULT_PROJECT = 'Unsorted'
 
 const projectSelect = document.getElementById('project-select')
 const projectCustom = document.getElementById('project-custom')
@@ -21,21 +14,65 @@ const metaPreview = document.getElementById('meta-preview')
 
 let activeTab = null
 let pageMeta = null
+let projectOptions = []
 
 init()
 
 async function init() {
-  populateProjects()
+  await loadProjectOptions()
   await loadPreferences()
   await loadActiveTab()
   await loadPageMetadata()
 }
 
-function populateProjects() {
-  projectSelect.innerHTML = DEFAULT_PROJECTS.map(
-    (project) => `<option value="${project}">${project}</option>`,
-  ).join('')
-  projectSelect.value = 'Unsorted'
+function uniqueProjects(projects) {
+  const seen = new Set()
+  const next = []
+
+  for (const project of projects) {
+    const trimmed = project?.trim()
+    if (!trimmed || trimmed === DEFAULT_PROJECT) continue
+    const key = trimmed.toLowerCase()
+    if (seen.has(key)) continue
+    seen.add(key)
+    next.push(trimmed)
+  }
+
+  return next
+}
+
+async function loadProjectOptions() {
+  try {
+    const response = await fetch(BACKUP_API)
+    if (!response.ok) throw new Error('Backup unavailable')
+
+    const data = await response.json()
+    projectOptions = uniqueProjects([
+      ...(data.recentProjects ?? []),
+      ...(data.links ?? []).map((link) => link.project),
+    ])
+  } catch {
+    const stored = await chrome.storage.local.get('recentProjects')
+    projectOptions = uniqueProjects(stored.recentProjects ?? [])
+  }
+
+  renderProjectSelect()
+}
+
+function renderProjectSelect(selected = projectSelect.value) {
+  projectSelect.innerHTML = [
+    '<option value="">No default project</option>',
+    ...projectOptions.map(
+      (project) =>
+        `<option value="${project.replace(/"/g, '&quot;')}">${project}</option>`,
+    ),
+  ].join('')
+
+  if (selected && projectOptions.some((project) => project === selected)) {
+    projectSelect.value = selected
+  } else {
+    projectSelect.value = ''
+  }
 }
 
 async function loadPreferences() {
@@ -47,9 +84,11 @@ async function loadPreferences() {
   ])
 
   if (prefs.project) {
-    if (DEFAULT_PROJECTS.includes(prefs.project)) {
+    if (projectOptions.includes(prefs.project)) {
       projectSelect.value = prefs.project
+      projectCustom.value = ''
     } else {
+      projectSelect.value = ''
       projectCustom.value = prefs.project
     }
   }
@@ -70,7 +109,7 @@ async function savePreferences() {
 }
 
 function getProject() {
-  return projectCustom.value.trim() || projectSelect.value || 'Unsorted'
+  return projectCustom.value.trim() || projectSelect.value || DEFAULT_PROJECT
 }
 
 function parseTags(raw) {
@@ -149,9 +188,7 @@ async function getSelectedText(tab) {
     live = ''
   }
 
-  if (live) return live
-
-  return ''
+  return live
 }
 
 async function loadPageMetadata() {
@@ -228,6 +265,7 @@ saveBtn.addEventListener('click', async () => {
 
     const result = await response.json()
     await savePreferences()
+    await loadProjectOptions()
 
     if (result.status === 'duplicate') {
       setStatus('Already in inbox.', 'warn')
