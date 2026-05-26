@@ -47,8 +47,35 @@ export function LinkList({
 
   if (totalCount === 0) {
     return (
-      <div className="rounded-lg border border-dashed border-zinc-800/60 py-16 text-center">
-        <p className="text-sm text-zinc-500">No links yet. Paste URLs or use the extension.</p>
+      <div className="rounded-lg border border-dashed border-zinc-800/60 bg-zinc-900/10 px-6 py-12 text-center">
+        <p className="mb-1 text-base font-medium text-zinc-300">Your inbox is empty</p>
+        <p className="mb-8 text-sm text-zinc-500">Save links, selected text, and notes — find them later by search.</p>
+        <ol className="mx-auto max-w-md space-y-4 text-left text-sm text-zinc-400">
+          <li className="flex gap-3">
+            <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-violet-950/60 text-xs font-medium text-violet-300">
+              1
+            </span>
+            <span>
+              <strong className="font-medium text-zinc-300">Paste URLs</strong> in Capture above, or load the browser extension.
+            </span>
+          </li>
+          <li className="flex gap-3">
+            <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-violet-950/60 text-xs font-medium text-violet-300">
+              2
+            </span>
+            <span>
+              <strong className="font-medium text-zinc-300">Highlight text</strong> on a page before you save — that becomes searchable later.
+            </span>
+          </li>
+          <li className="flex gap-3">
+            <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-violet-950/60 text-xs font-medium text-violet-300">
+              3
+            </span>
+            <span>
+              <strong className="font-medium text-zinc-300">Search</strong> by words you remember — not the URL.
+            </span>
+          </li>
+        </ol>
       </div>
     )
   }

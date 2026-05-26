@@ -53,19 +53,32 @@ export function LinkCard({ link, projectOptions, onUpdate, onDelete, onFilter }:
   const labelClass = 'mb-1 block text-[10px] font-medium uppercase tracking-wide text-zinc-600'
 
   const chipClass =
-    'rounded-full px-2 py-0.5 text-[10px] transition-colors focus:outline-none focus-visible:ring-1 focus-visible:ring-violet-500/50'
+    'rounded-full px-2 py-0.5 text-[11px] transition-colors focus:outline-none focus-visible:ring-1 focus-visible:ring-violet-500/50'
   const chipButtonClass = `${chipClass} cursor-pointer hover:ring-1 hover:ring-zinc-600/60`
+
+  const cardTone =
+    link.status === 'archive'
+      ? 'border-zinc-800/40 bg-zinc-900/10 opacity-80'
+      : link.status === 'trash'
+        ? 'border-red-950/40 bg-red-950/5 opacity-75'
+        : 'border-zinc-800/60 bg-zinc-900/20'
 
   if (!editing) {
     return (
-      <article className="group rounded-lg border border-zinc-800/60 bg-zinc-900/20 px-4 py-3 transition-colors hover:border-zinc-700/80 hover:bg-zinc-900/35">
+      <article
+        className={`group rounded-lg border px-4 py-3.5 transition-colors hover:border-zinc-700/80 hover:bg-zinc-900/35 ${cardTone}`}
+      >
         <div className="flex items-start gap-3">
           <div className="min-w-0 flex-1">
             <a
               href={link.url}
               target="_blank"
               rel="noopener noreferrer"
-              className="mb-2 block text-[15px] font-medium leading-snug text-zinc-100 hover:text-violet-200"
+              className={`mb-2 block text-base font-medium leading-snug hover:text-violet-200 ${
+                link.status === 'trash'
+                  ? 'text-zinc-500 line-through decoration-zinc-600'
+                  : 'text-zinc-100'
+              }`}
             >
               {displayTitle}
             </a>
@@ -139,14 +152,14 @@ export function LinkCard({ link, projectOptions, onUpdate, onDelete, onFilter }:
                 <p className="mb-1 text-[10px] font-medium uppercase tracking-wide text-violet-400/70">
                   Selected text
                 </p>
-                <p className="line-clamp-3 text-xs italic leading-relaxed text-zinc-400">
+                <p className="line-clamp-3 text-sm italic leading-relaxed text-zinc-400">
                   “{truncate(selectedText)}”
                 </p>
               </div>
             )}
 
             {showNote && (
-              <p className="line-clamp-2 text-xs leading-relaxed text-zinc-500">{noteSnippet}</p>
+              <p className="line-clamp-2 text-sm leading-relaxed text-zinc-500">{noteSnippet}</p>
             )}
 
             <p className="mt-2 text-[10px] text-zinc-700">{captured}</p>

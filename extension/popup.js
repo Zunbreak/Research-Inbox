@@ -11,6 +11,8 @@ const saveBtn = document.getElementById('save-btn')
 const statusEl = document.getElementById('status')
 const pagePreview = document.getElementById('page-preview')
 const metaPreview = document.getElementById('meta-preview')
+const selectedTextPreview = document.getElementById('selected-text-preview')
+const selectedTextBody = document.getElementById('selected-text-body')
 
 let activeTab = null
 let pageMeta = null
@@ -127,6 +129,32 @@ function parseDomain(url) {
   }
 }
 
+function truncate(text, max = 220) {
+  if (!text || text.length <= max) return text
+  return `${text.slice(0, max).trim()}…`
+}
+
+function renderSelectedTextPreview(text) {
+  const trimmed = text?.trim()
+  if (!trimmed) {
+    selectedTextPreview.classList.add('hidden')
+    selectedTextBody.textContent = ''
+    return
+  }
+
+  selectedTextBody.textContent = `“${truncate(trimmed)}”`
+  selectedTextPreview.classList.toggle('hidden', !includeSelected.checked)
+}
+
+function renderMetaPreview(pageMeta) {
+  const previewParts = [
+    pageMeta.description || pageMeta.ogDescription,
+    pageMeta.headings?.slice(0, 2).join(' · '),
+  ].filter(Boolean)
+
+  metaPreview.textContent = previewParts.join(' | ') || 'No page metadata found.'
+}
+
 function setStatus(message, type = '') {
   statusEl.textContent = message
   statusEl.className = `status ${type}`.trim()
@@ -202,13 +230,8 @@ async function loadPageMetadata() {
     pageMeta = result
     pageMeta.selectedText = await getSelectedText(activeTab)
 
-    const previewParts = [
-      pageMeta.description || pageMeta.ogDescription,
-      pageMeta.headings?.slice(0, 2).join(' · '),
-      pageMeta.selectedText ? `Selected: ${pageMeta.selectedText.slice(0, 80)}…` : '',
-    ].filter(Boolean)
-
-    metaPreview.textContent = previewParts.join(' | ') || 'No page metadata found.'
+    renderMetaPreview(pageMeta)
+    renderSelectedTextPreview(pageMeta.selectedText)
   } catch {
     pageMeta = {
       title: activeTab.title || '',
@@ -218,11 +241,14 @@ async function loadPageMetadata() {
       headings: [],
       selectedText: await getSelectedText(activeTab),
     }
-    metaPreview.textContent = pageMeta.selectedText
-      ? `Selected: ${pageMeta.selectedText.slice(0, 80)}…`
-      : 'Metadata capture limited on this page.'
+    metaPreview.textContent = 'Metadata capture limited on this page.'
+    renderSelectedTextPreview(pageMeta.selectedText)
   }
 }
+
+includeSelected.addEventListener('change', () => {
+  renderSelectedTextPreview(pageMeta?.selectedText)
+})
 
 saveBtn.addEventListener('click', async () => {
   if (!activeTab?.url) return

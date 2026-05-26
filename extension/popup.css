@@ -81,6 +81,39 @@ textarea {
   width: auto;
 }
 
+.selected-text-preview {
+  margin: 0 0 10px;
+  padding: 8px 10px;
+  border-left: 2px solid rgba(139, 92, 246, 0.4);
+  border-radius: 0 6px 6px 0;
+  background: rgba(76, 29, 149, 0.15);
+}
+
+.selected-text-preview.hidden {
+  display: none;
+}
+
+.selected-text-label {
+  margin: 0 0 4px;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: rgba(167, 139, 250, 0.7);
+}
+
+.selected-text-body {
+  margin: 0;
+  font-size: 12px;
+  font-style: italic;
+  line-height: 1.45;
+  color: #a1a1aa;
+  display: -webkit-box;
+  -webkit-line-clamp: 4;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
 .meta-preview {
   margin: 0 0 10px;
   font-size: 11px;
