@@ -59,6 +59,10 @@ export interface CaptureResult {
   invalid: number
 }
 
+export type ImportBackupResult =
+  | { mode: 'merge'; added: number; alreadyExisted: number }
+  | { mode: 'replace'; total: number }
+
 export interface BackupPayload {
   version: 1
   savedAt: string | null

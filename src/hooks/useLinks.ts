@@ -1,31 +1,29 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import {
   captureLinksFromText,
   linkMatchesSearch,
-  normalizeUrl,
   sortLinksByCapturedAt,
-} from '../lib/capture'
-import {
-  fetchFileBackup,
-  mergeLinks,
-  mergeRecentProjects,
-  scheduleFileBackup,
-} from '../storage/backup'
-import {
-  exportLinksJson,
-  importLinksJson,
-  loadLinks,
-  loadRecentProjects,
-  saveLinks,
-  saveRecentProjects,
-} from '../storage/links'
-import type { BackupState, CaptureResult, FilterState, LinkItem, LinkStatus } from '../types'
-import { getProjectOptions, normalizeProject, sanitizeRecentProjects, trackRecentProject } from '../utils/project'
-import { parseTags } from '../utils/url'
+} from '../lib/capture.ts'
+import { countImportMergeStats, mergeLinks, mergeRecentProjects } from '../storage/backup.ts'
+import { getStorageAdapter } from '../storage/getAdapter.ts'
+import { readLastExportedAt, writeLastExportedAt } from '../storage/lastExported.ts'
+import { exportLinksJson, importLinksJson } from '../storage/links.ts'
+import type { InboxSnapshot } from '../storage/types.ts'
+import type {
+  BackupState,
+  CaptureResult,
+  FilterState,
+  ImportBackupResult,
+  LinkItem,
+  LinkStatus,
+} from '../types.ts'
+import { getProjectOptions, normalizeProject, sanitizeRecentProjects, trackRecentProject } from '../utils/project.ts'
+import { parseTags } from '../utils/url.ts'
 
 export function useLinks() {
-  const [links, setLinks] = useState<LinkItem[]>(() => loadLinks())
-  const [recentProjects, setRecentProjects] = useState<string[]>(() => loadRecentProjects())
+  const adapter = useMemo(() => getStorageAdapter(), [])
+  const [links, setLinks] = useState<LinkItem[]>([])
+  const [recentProjects, setRecentProjects] = useState<string[]>([])
   const [filters, setFilters] = useState<FilterState>({
     search: '',
     status: 'all',
@@ -36,167 +34,139 @@ export function useLinks() {
   const [lastCapture, setLastCapture] = useState<CaptureResult | null>(null)
   const [backupState, setBackupState] = useState<BackupState>('loading')
   const [lastBackupAt, setLastBackupAt] = useState<string | null>(null)
-  const recentProjectsRef = useRef(recentProjects)
+  const [lastExportedAt, setLastExportedAt] = useState<string | null>(null)
 
-  useEffect(() => {
-    recentProjectsRef.current = recentProjects
-  }, [recentProjects])
-
-  const projectOptions = useMemo(
-    () => getProjectOptions(
-      recentProjects,
-      links.map((link) => link.project),
-    ),
-    [recentProjects, links],
-  )
-
-  const pushBackup = useCallback((nextLinks: LinkItem[], nextRecent: string[]) => {
-    setBackupState('saving')
-    scheduleFileBackup(nextLinks, nextRecent)
-      .then((savedAt) => {
-        setLastBackupAt(savedAt)
-        setBackupState('active')
-      })
-      .catch(() => {
-        setBackupState('offline')
-      })
+  const applySnapshot = useCallback((snapshot: InboxSnapshot, state: BackupState) => {
+    setLinks(sortLinksByCapturedAt(snapshot.links))
+    setRecentProjects(snapshot.recentProjects)
+    setLastBackupAt(snapshot.savedAt)
+    setBackupState(state)
   }, [])
 
-  const persistLinks = useCallback(
-    (next: LinkItem[], nextRecent = recentProjectsRef.current) => {
-      const sorted = sortLinksByCapturedAt(next)
-      setLinks(sorted)
-      saveLinks(sorted)
-      pushBackup(sorted, nextRecent)
-    },
-    [pushBackup],
-  )
-
-  const mergeFromFileBackup = useCallback(async () => {
-    const file = await fetchFileBackup()
-    const localLinks = loadLinks()
-    const localRecent = loadRecentProjects()
-    const mergedLinks = mergeLinks(localLinks, file.links)
-    const mergedRecent = sanitizeRecentProjects(
-      mergeRecentProjects(localRecent, file.recentProjects),
-      mergedLinks,
-    )
-
-    return { mergedLinks, mergedRecent, localLinks, localRecent, savedAt: file.savedAt }
-  }, [])
-
-  const applyFileBackup = useCallback(
-    (result: {
-      mergedLinks: LinkItem[]
-      mergedRecent: string[]
-      localLinks: LinkItem[]
-      localRecent: string[]
-      savedAt: string | null
-    }) => {
-      const { mergedLinks, mergedRecent, localLinks, localRecent, savedAt } = result
-      setLinks(mergedLinks)
-      saveLinks(mergedLinks)
-      setRecentProjects(mergedRecent)
-      saveRecentProjects(mergedRecent)
-      setLastBackupAt(savedAt)
-      setBackupState('active')
-
-      const changed =
-        mergedLinks.length !== localLinks.length ||
-        mergedRecent.length !== localRecent.length
-      if (changed || mergedLinks.length > 0) {
-        pushBackup(mergedLinks, mergedRecent)
-      }
-    },
-    [pushBackup],
-  )
-
-  const syncFromFile = useCallback(async () => {
-    try {
-      const result = await mergeFromFileBackup()
-      applyFileBackup(result)
+  const mutateSnapshot = useCallback(
+    async (
+      mutator: (current: InboxSnapshot) => InboxSnapshot | Promise<InboxSnapshot>,
+    ) => {
+      setBackupState('saving')
+      const result = await adapter.mutateSnapshot(mutator)
+      applySnapshot(result, result.backupState)
       return result
-    } catch {
-      setBackupState('offline')
-      return null
-    }
-  }, [applyFileBackup, mergeFromFileBackup])
+    },
+    [adapter, applySnapshot],
+  )
 
   useEffect(() => {
     let cancelled = false
 
-    void mergeFromFileBackup()
-      .then((result) => {
-        if (cancelled) return
-        applyFileBackup(result)
-      })
-      .catch(() => {
-        if (!cancelled) setBackupState('offline')
-      })
+    void adapter.initialSync().then((result) => {
+      if (cancelled) return
+      applySnapshot(result, result.backupState)
+    })
 
     return () => {
       cancelled = true
     }
-  }, [applyFileBackup, mergeFromFileBackup])
+  }, [adapter, applySnapshot])
 
   useEffect(() => {
-    const onFocus = () => {
-      void syncFromFile()
+    return adapter.subscribe((snapshot) => {
+      applySnapshot(snapshot, 'active')
+    })
+  }, [adapter, applySnapshot])
+
+  useEffect(() => {
+    let cancelled = false
+
+    void readLastExportedAt().then((savedAt) => {
+      if (!cancelled) setLastExportedAt(savedAt)
+    })
+
+    return () => {
+      cancelled = true
     }
-    window.addEventListener('focus', onFocus)
-    return () => window.removeEventListener('focus', onFocus)
-  }, [syncFromFile])
+  }, [])
+
+  const projectOptions = useMemo(
+    () =>
+      getProjectOptions(
+        recentProjects,
+        links.map((link) => link.project),
+      ),
+    [recentProjects, links],
+  )
 
   const captureFromText = useCallback(
-    (text: string, defaultProject?: string, defaultTagsRaw?: string): CaptureResult => {
+    async (
+      text: string,
+      defaultProject?: string,
+      defaultTagsRaw?: string,
+    ): Promise<CaptureResult> => {
       const lines = text.split(/\r?\n/)
       const defaultTags = defaultTagsRaw?.trim() ? parseTags(defaultTagsRaw) : undefined
-      const { links: nextLinks, added, duplicates, invalid } = captureLinksFromText(links, lines, {
-        defaultProject: defaultProject?.trim() ? normalizeProject(defaultProject) : undefined,
-        defaultTags,
-        source: 'paste',
+      let result: CaptureResult = { added: 0, duplicates: 0, invalid: 0 }
+
+      await mutateSnapshot((current) => {
+        const captured = captureLinksFromText(current.links, lines, {
+          defaultProject: defaultProject?.trim() ? normalizeProject(defaultProject) : undefined,
+          defaultTags,
+          source: 'paste',
+        })
+        result = {
+          added: captured.added,
+          duplicates: captured.duplicates,
+          invalid: captured.invalid,
+        }
+        return {
+          ...current,
+          links: captured.links,
+        }
       })
 
-      persistLinks(nextLinks)
-      const result = { added, duplicates, invalid }
       setLastCapture(result)
       return result
     },
-    [links, persistLinks],
+    [mutateSnapshot],
   )
 
   const updateLink = useCallback(
     (id: string, patch: Partial<LinkItem>) => {
-      const next = links.map((link) => {
-        if (link.id !== id) return link
-        const updated = { ...link, ...patch }
-        if (patch.project !== undefined) {
-          updated.project = normalizeProject(patch.project)
+      void mutateSnapshot((current) => {
+        const nextLinks = current.links.map((link) => {
+          if (link.id !== id) return link
+          const updated = { ...link, ...patch }
+          if (patch.project !== undefined) {
+            updated.project = normalizeProject(patch.project)
+          }
+          if (patch.tags !== undefined) {
+            updated.tags = patch.tags
+          }
+          return updated
+        })
+
+        let nextRecent = current.recentProjects
+        const updatedLink = nextLinks.find((link) => link.id === id)
+        if (updatedLink && patch.project !== undefined) {
+          nextRecent = trackRecentProject(current.recentProjects, updatedLink.project)
         }
-        if (patch.tags !== undefined) {
-          updated.tags = patch.tags
+
+        return {
+          links: nextLinks,
+          recentProjects: nextRecent,
+          savedAt: current.savedAt,
         }
-        return updated
       })
-
-      let nextRecent = recentProjects
-      const updatedLink = next.find((link) => link.id === id)
-      if (updatedLink && patch.project !== undefined) {
-        nextRecent = trackRecentProject(recentProjects, updatedLink.project)
-        setRecentProjects(nextRecent)
-        saveRecentProjects(nextRecent)
-      }
-
-      persistLinks(next, nextRecent)
     },
-    [links, persistLinks, recentProjects],
+    [mutateSnapshot],
   )
 
   const deleteLink = useCallback(
     (id: string) => {
-      persistLinks(links.filter((link) => link.id !== id))
+      void mutateSnapshot((current) => ({
+        ...current,
+        links: current.links.filter((link) => link.id !== id),
+      }))
     },
-    [links, persistLinks],
+    [mutateSnapshot],
   )
 
   const filteredLinks = useMemo(() => {
@@ -234,37 +204,54 @@ export function useLinks() {
     }
   }, [links])
 
-  const exportJson = useCallback(() => exportLinksJson(links), [links])
+  const exportBackup = useCallback(async () => {
+    const json = exportLinksJson(links)
+    const savedAt = new Date().toISOString()
+    await writeLastExportedAt(savedAt)
+    setLastExportedAt(savedAt)
+    return json
+  }, [links])
 
   const importJson = useCallback(
-    (raw: string, mode: 'merge' | 'replace') => {
-      const { links: importedLinks, skipped } = importLinksJson(raw)
+    async (raw: string, mode: 'merge' | 'replace'): Promise<ImportBackupResult> => {
+      const { links: importedLinks, recentProjects: importedRecent } = importLinksJson(raw)
       const imported = importedLinks.map((link) => ({
         ...link,
         source: link.source ?? ('import' as const),
       }))
 
       if (mode === 'replace') {
-        persistLinks(imported)
-        return { added: imported.length, skipped }
+        await mutateSnapshot((current) => ({
+          links: sortLinksByCapturedAt(imported),
+          recentProjects: sanitizeRecentProjects(
+            importedRecent ?? current.recentProjects,
+            imported,
+          ),
+          savedAt: current.savedAt,
+        }))
+        return { mode: 'replace', total: imported.length }
       }
 
-      const existing = new Set(links.map((link) => normalizeUrl(link.url)))
-      const merged = [...links]
-      let added = 0
+      let stats = { added: 0, alreadyExisted: 0 }
 
-      for (const link of imported) {
-        const key = normalizeUrl(link.url)
-        if (existing.has(key)) continue
-        merged.push(link)
-        existing.add(key)
-        added += 1
-      }
+      await mutateSnapshot((current) => {
+        stats = countImportMergeStats(current.links, imported)
+        const mergedLinks = mergeLinks(current.links, imported)
+        const mergedRecent = sanitizeRecentProjects(
+          mergeRecentProjects(current.recentProjects, importedRecent ?? []),
+          mergedLinks,
+        )
 
-      persistLinks(merged)
-      return { added, skipped }
+        return {
+          links: mergedLinks,
+          recentProjects: mergedRecent,
+          savedAt: current.savedAt,
+        }
+      })
+
+      return { mode: 'merge', ...stats }
     },
-    [links, persistLinks],
+    [mutateSnapshot],
   )
 
   return {
@@ -277,10 +264,12 @@ export function useLinks() {
     lastCapture,
     backupState,
     lastBackupAt,
+    lastExportedAt,
+    storageMode: adapter.mode,
     captureFromText,
     updateLink,
     deleteLink,
-    exportJson,
+    exportBackup,
     importJson,
     parseTags,
   }
