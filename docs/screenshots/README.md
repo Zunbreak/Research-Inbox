@@ -15,14 +15,21 @@ Example topics (fake URLs / public docs only):
 
 Populate via paste or a small hand-crafted JSON import in a fresh extension profile.
 
+## Demo data
+
+Import `demo-inbox-backup.json` (10 synthetic links, 7 projects).  
+**Never** use real/private inbox data in screenshots.
+
+Suggested search phrase for shot 03: `local-first software keeps data on the device`
+
 ## Files to capture
 
-| File | What to show |
-|------|----------------|
-| `hero-inbox-demo.png` | Wide hero — inbox overview with demo data |
-| `01-capture-popup.png` | Page with highlighted text + Z popup (Save to Inbox) |
-| `02-inbox-overview.png` | Full inbox: sidebar projects/tags, link cards |
-| `03-search-selected-text.png` | Search query matching saved selected text |
+| File | Composition |
+|------|-------------|
+| `hero-inbox-demo.png` | Wide crop of full inbox: header, sidebar with project counts, 3–4 link cards visible, dark theme. Demo data loaded. No popup. |
+| `01-capture-popup.png` | Real browser page (e.g. MDN or Three.js) with **highlighted text** visible; Z popup open showing page preview, project/tags fields, Save to Inbox. Inbox tab not required in frame. |
+| `02-inbox-overview.png` | Full inbox at ~1440px width: sidebar (Web Graphics, Browser Tools, 3D Workflow…), varied cards showing tags, whySaved, selected text blocks. Filter area visible. |
+| `03-search-selected-text.png` | Same inbox with search box filled (`local-first software keeps data on the device`); demo-006 card highlighted/visible in results; result count shown. |
 
 Optional later:
 
