@@ -1,4 +1,4 @@
-import type { LinkStatus } from './types'
+import type { LinkStatus } from './types.ts'
 
 export const STORAGE_KEY = 'zunbreak-research-inbox'
 export const RECENT_PROJECTS_KEY = 'zunbreak-recent-projects'

@@ -1,5 +1,5 @@
 import { z } from 'zod'
-import type { BackupPayload, CaptureLinkInput, LinkItem } from '../types'
+import type { BackupPayload, CaptureLinkInput, LinkItem } from '../types.ts'
 
 export const LIMITS = {
   url: 4096,

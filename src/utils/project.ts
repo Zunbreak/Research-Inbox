@@ -1,4 +1,4 @@
-import { DEFAULT_PROJECT, DEFAULT_PROJECTS } from '../constants'
+import { DEFAULT_PROJECT, DEFAULT_PROJECTS } from '../constants.ts'
 
 export function normalizeProject(input: string): string {
   const trimmed = input.trim()

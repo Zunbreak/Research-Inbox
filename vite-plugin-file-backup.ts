@@ -2,15 +2,15 @@ import fs from 'node:fs'
 import path from 'node:path'
 import type { IncomingMessage, ServerResponse } from 'node:http'
 import type { Plugin } from 'vite'
-import { addCapturedLink, sortLinksByCapturedAt } from './src/lib/capture'
+import { addCapturedLink, sortLinksByCapturedAt } from './src/lib/capture.ts'
 import {
   LIMITS,
   PayloadTooLargeError,
   parseBackupPayload,
   parseBackupPayloadLenient,
   parseCaptureLinkInput,
-} from './src/lib/validation'
-import type { BackupPayload } from './src/types'
+} from './src/lib/validation.ts'
+import type { BackupPayload } from './src/types.ts'
 
 const BACKUP_DIR = 'data'
 const BACKUP_FILE = 'links.json'

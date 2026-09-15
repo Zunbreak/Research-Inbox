@@ -1,8 +1,8 @@
-import { DEFAULT_PROJECT } from '../constants'
-import type { CaptureLinkInput, CaptureLinkResult, LinkItem, LinkSource } from '../types'
-import { normalizeProject } from '../utils/project'
-import { getCapturedAtSearchText } from '../utils/date'
-import { normalizeUrl, parseDomain } from '../utils/url'
+import { DEFAULT_PROJECT } from '../constants.ts'
+import type { CaptureLinkInput, CaptureLinkResult, LinkItem, LinkSource } from '../types.ts'
+import { normalizeProject } from '../utils/project.ts'
+import { getCapturedAtSearchText } from '../utils/date.ts'
+import { normalizeUrl, parseDomain } from '../utils/url.ts'
 
 export { normalizeUrl, parseDomain }
 
