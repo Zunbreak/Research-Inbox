@@ -8,9 +8,11 @@
 **Most bookmark tools save URLs.  
 This saves the reason a page mattered.**
 
-<!-- Hero demo image — uncomment after docs/screenshots/hero-inbox-demo.png exists (synthetic demo data only)
+**Search by what you remember, not what you bookmarked.**
+
+Highlight the part that mattered when you save a page. Later, search for the fragment you remember — even if you forgot the site or URL.
+
 ![Research Inbox — capture, organise, and search saved pages](docs/screenshots/hero-inbox-demo.png)
--->
 
 Local-first browser research.  
 No account. No cloud. No AI required.
@@ -29,15 +31,23 @@ By **Zunbreak**.
 2. Click **Z**
 3. Add project, tags, or a note
 4. **Save to Inbox**
-5. Search for it later — even by the words you highlighted
+5. Search for it later — by the words you highlighted, not the URL you forgot
 
-<!-- Screenshot set — uncomment after PNGs exist (synthetic demo inbox, 8–12 example links, never real/private data)
-| Capture | Inbox | Find it later |
-|---------|-------|---------------|
-| ![Highlight text and save from the popup](docs/screenshots/01-capture-popup.png) | ![Full inbox with projects, tags, and demo links](docs/screenshots/02-inbox-overview.png) | ![Search finds saved selected text](docs/screenshots/03-search-selected-text.png) |
+### Search what you remember
+
+You do not need to remember which site you saved. Remember a phrase from what you read — Research Inbox finds the page from the selected text you kept.
+
+![Search finds saved selected text — demo query matches a highlighted fragment from weeks ago](docs/screenshots/03-search-selected-text.png)
+
+### Full inbox overview
+
+![Full inbox with projects, tags, selected text, and demo links](docs/screenshots/02-inbox-overview.png)
+
+<!-- Capture popup — add when 01-capture-popup.png exists (manual capture; synthetic demo data only)
+![Highlight text and save from the popup](docs/screenshots/01-capture-popup.png)
 -->
 
-*Screenshots coming soon* — see [docs/screenshots/README.md](docs/screenshots/README.md) for the planned demo-data shot list.
+Demo data only in screenshots — see [docs/screenshots/README.md](docs/screenshots/README.md).
 
 ---
 
@@ -46,7 +56,7 @@ By **Zunbreak**.
 Bookmarks save links. Research Inbox saves **context**:
 
 - why you saved the page
-- the sentence you highlighted
+- the sentence you highlighted — searchable later, even when the URL is not
 - project and tags for later filtering
 - searchable page metadata (title, description, headings)
 
@@ -75,7 +85,8 @@ Paste works without the extension (URL only). The extension adds rich page conte
 
 ## Search & organisation
 
-- Full-text search across URL, domain, project, tags, notes, headings, and selected text
+- Search by what you remember: selected text, notes, headings, tags, project, URL, and domain
+- Find a saved page from a fragment you recall — you do not need to remember where you found it
 - Filter by status (Inbox / Archive / Trash), project, tag, and domain
 - URL fragments treated as distinct links (`page#SectionA` ≠ `page#SectionB`)
 
