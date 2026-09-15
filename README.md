@@ -138,10 +138,10 @@ The standalone extension and developer app share the same inbox UI and link sche
 Research Inbox is **not published in the Chrome Web Store yet**. Chrome Web Store distribution is planned; until then, install the standalone build manually from a packaged release.
 
 **Packaged browser extension:** coming with the first GitHub Release.  
-[View Releases](https://github.com/Zunbreak/Zunbreak-Research-Inbox/releases)
+[View Releases](https://github.com/Zunbreak/research-inbox/releases)
 
 <!-- After v1.0.0 release, replace the note above with:
-**[Download Browser Extension](https://github.com/Zunbreak/Zunbreak-Research-Inbox/releases/latest)** — extract the ZIP, then follow manual installation below.
+**[Download Browser Extension](https://github.com/Zunbreak/research-inbox/releases/latest)** — extract the ZIP, then follow manual installation below.
 -->
 
 Until that release exists, developers can [build the extension from source](#build-standalone-extension-from-source).
@@ -150,7 +150,7 @@ Until that release exists, developers can [build the extension from source](#bui
 
 When a packaged release is available:
 
-1. Download the latest extension ZIP from [GitHub Releases](https://github.com/Zunbreak/Zunbreak-Research-Inbox/releases) and extract it
+1. Download the latest extension ZIP from [GitHub Releases](https://github.com/Zunbreak/research-inbox/releases) and extract it
 2. Open `chrome://extensions` or `brave://extensions`
 3. Enable **Developer mode**
 4. Click **Load unpacked**
@@ -167,8 +167,8 @@ No `npm run dev`. No localhost. Data stays in your browser profile.
 For developers who want to package the extension themselves (not required for normal use).
 
 ```bash
-git clone https://github.com/Zunbreak/Zunbreak-Research-Inbox.git
-cd Zunbreak-Research-Inbox
+git clone https://github.com/Zunbreak/research-inbox.git
+cd research-inbox
 npm install
 npm run build:extension
 ```
@@ -184,8 +184,8 @@ Re-run `npm run build:extension` after pulling updates.
 For development and hacking on the project — **not** the normal way to use Research Inbox.
 
 ```bash
-git clone https://github.com/Zunbreak/Zunbreak-Research-Inbox.git
-cd Zunbreak-Research-Inbox
+git clone https://github.com/Zunbreak/research-inbox.git
+cd research-inbox
 npm install
 npm run dev
 ```
