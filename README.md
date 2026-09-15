@@ -8,131 +8,215 @@
 **Most bookmark tools save URLs.  
 This saves the reason a page mattered.**
 
-A local-first research inbox for capturing tabs, selected text, notes, tags, and searchable context.
+<!-- Hero demo image — uncomment after docs/screenshots/hero-inbox-demo.png exists (synthetic demo data only)
+![Research Inbox — capture, organise, and search saved pages](docs/screenshots/hero-inbox-demo.png)
+-->
 
+Local-first browser research.  
 No account. No cloud. No AI required.
 
 By **Zunbreak**.
 
-## Current status
+| [Browser Extension](#install-browser-extension) | [Build from source](#build-standalone-extension-from-source) | [Developer Mode](#run-developer-mode) |
+|---|---|---|
+| Recommended · no Node required | Package the extension yourself | Hack on the app · localhost |
 
-This is a **local-first developer release**.
+---
 
-- Runs locally with `npm run dev`
-- Browser extension is loaded manually from `extension/`
-- Not packaged as a desktop app yet
-- Not published to Chrome Web Store yet
+## See it in action
 
-## Who is this for?
+1. Highlight something useful on a page
+2. Click **Z**
+3. Add project, tags, or a note
+4. **Save to Inbox**
+5. Search for it later — even by the words you highlighted
 
-- People drowning in open tabs who want a real research inbox
-- Developers and builders doing technical research
-- Anyone who wants **selected text + searchable notes**, not just bookmarked URLs
-- Local-first, privacy-conscious users who do not want another SaaS account
+<!-- Screenshot set — uncomment after PNGs exist (synthetic demo inbox, 8–12 example links, never real/private data)
+| Capture | Inbox | Find it later |
+|---------|-------|---------------|
+| ![Highlight text and save from the popup](docs/screenshots/01-capture-popup.png) | ![Full inbox with projects, tags, and demo links](docs/screenshots/02-inbox-overview.png) | ![Search finds saved selected text](docs/screenshots/03-search-selected-text.png) |
+-->
 
-## Screenshots
+*Screenshots coming soon* — see [docs/screenshots/README.md](docs/screenshots/README.md) for the planned demo-data shot list.
 
-![Inbox with links, search, and filters](docs/screenshots/app-dashboard.png)
+---
 
-| Selected text on the card | Search by selected text |
-|---------------------------|---------------------------|
-| ![Selected text saved on the card](docs/screenshots/selected-text-preview.png) | ![Search by selected text](docs/screenshots/selected-text-search.png) |
+## Why Research Inbox?
 
-| Empty inbox | Extension: Save to Inbox |
-|-------------|--------------------------|
-| ![Empty inbox, paste URLs to start](docs/screenshots/app-dashboard-empty.png) | ![Browser extension popup](docs/screenshots/extension-popup.png) |
+Bookmarks save links. Research Inbox saves **context**:
 
-## Why I built this
+- why you saved the page
+- the sentence you highlighted
+- project and tags for later filtering
+- searchable page metadata (title, description, headings)
 
-I was tired of having 200 tabs open and pretending that was a research system.
+I built this because 200 open tabs is not a research system.
 
-Bookmarks were not enough. They saved the link, but not the reason I cared about it.
+---
 
-Zunbreak Research Inbox is my attempt to fix that: capture the page, save the important text, add a quick note, close the tab, and find it again when it actually matters.
+## What it captures
 
-## What it does
+**From the browser extension** (one click on the current tab):
 
-- **Paste** many URLs at once and close tabs guilt-free
-- **Capture** the current tab via browser extension (title, meta, headings, selected text)
-- **Search** across URL, domain, project, tags, notes, and captured page context
-- **Filter** by status, project, tag, and domain
-- **Treat URL fragments as distinct links:** `docs/page#SectionA` and `#SectionB` do not collide (useful for docs sites like Three.js)
-- **Store** everything locally (`localStorage` + auto-backup to `data/links.json` while dev server runs)
+- URL, title, and domain
+- Meta description and Open Graph text (when present)
+- Headings (h1/h2) for extra keywords
+- **Selected text** — highlight first, then save
+- Your note, project, and tags
 
-## What the extension captures
+**From the inbox** (paste panel):
 
-One click saves more than a bookmark:
+- Many URLs at once (one per line)
+- Optional default project and tags
 
-- **URL, page title, and domain**
-- **Meta description** and Open Graph text (when the page has them)
-- **Headings** (h1/h2) for extra search keywords
-- **Selected text:** highlight the important sentence first, then save
-- **Your note, project, and tags** (optional)
+Paste works without the extension (URL only). The extension adds rich page context from the active tab.
 
-Everything above is searchable locally. You do not need to remember the URL. Search for a word from the page or the text you highlighted.
+---
 
-Paste in the app works without the extension (URL only). The extension adds rich page context from the active tab.
+## Search & organisation
 
-## Quick start
+- Full-text search across URL, domain, project, tags, notes, headings, and selected text
+- Filter by status (Inbox / Archive / Trash), project, tag, and domain
+- URL fragments treated as distinct links (`page#SectionA` ≠ `page#SectionB`)
 
-### App
+---
+
+## Backup & Restore
+
+Your inbox lives locally. Export a JSON backup anytime from **Backup & Restore** in the inbox.
+
+- **Export backup** — download a portable copy; tracks last export time locally
+- **Import backup** — **Merge** (add new links only, idempotent) or **Replace all** (destructive, requires confirmation)
+
+No cloud sync. If you uninstall the extension or lose a browser profile, your backup file is the restore path.
+
+---
+
+## Privacy
+
+- No account, no cloud backend, no analytics
+- Data stays on your machine
+- Extension reads the active tab **only when you click Save**
+- No AI required; no API keys in the extension
+
+**Where data is stored depends on how you run it** (see below). Private inbox files are gitignored — never commit your saved links.
+
+---
+
+## Use it your way
+
+Three ways to run the same product — pick one:
+
+| | Browser Extension | Build from source | Developer Mode |
+|---|---|---|---|
+| **For** | Normal use | Developers packaging the extension | Developing / hacking on the repo |
+| **Node / npm** | Not required | Required | Required |
+| **localhost** | No | No | Yes (`npm run dev`) |
+| **Storage** | `chrome.storage.local` | `chrome.storage.local` | `localStorage` + `data/links.json` |
+
+The standalone extension and developer app share the same inbox UI and link schema. Move data between them with **Export backup** / **Import backup**.
+
+---
+
+## Install Browser Extension
+
+**Recommended.** Use Research Inbox without Node, npm, a terminal, or a dev server.
+
+**Requirements:** Brave or Chrome (Chromium, Manifest V3)
+
+Research Inbox is **not published in the Chrome Web Store yet**. Chrome Web Store distribution is planned; until then, install the standalone build manually from a packaged release.
+
+**Packaged browser extension:** coming with the first GitHub Release.  
+[View Releases](https://github.com/Zunbreak/Zunbreak-Research-Inbox/releases)
+
+<!-- After v1.0.0 release, replace the note above with:
+**[Download Browser Extension](https://github.com/Zunbreak/Zunbreak-Research-Inbox/releases/latest)** — extract the ZIP, then follow manual installation below.
+-->
+
+Until that release exists, developers can [build the extension from source](#build-standalone-extension-from-source).
+
+### Manual installation (from release ZIP)
+
+When a packaged release is available:
+
+1. Download the latest extension ZIP from [GitHub Releases](https://github.com/Zunbreak/Zunbreak-Research-Inbox/releases) and extract it
+2. Open `chrome://extensions` or `brave://extensions`
+3. Enable **Developer mode**
+4. Click **Load unpacked**
+5. Select the **extracted extension folder** (not the ZIP itself)
+6. Pin **Zunbreak Research Inbox**
+7. Done — browse → click **Z** → **Save to Inbox** → **Open Inbox**
+
+No `npm run dev`. No localhost. Data stays in your browser profile.
+
+---
+
+## Build standalone extension from source
+
+For developers who want to package the extension themselves (not required for normal use).
 
 ```bash
+git clone https://github.com/Zunbreak/Zunbreak-Research-Inbox.git
+cd Zunbreak-Research-Inbox
+npm install
+npm run build:extension
+```
+
+Then **Load unpacked** → select the `dist/extension/` folder (gitignored output).
+
+Re-run `npm run build:extension` after pulling updates.
+
+---
+
+## Run Developer Mode
+
+For development and hacking on the project — **not** the normal way to use Research Inbox.
+
+```bash
+git clone https://github.com/Zunbreak/Zunbreak-Research-Inbox.git
+cd Zunbreak-Research-Inbox
 npm install
 npm run dev
 ```
 
 Open **http://localhost:5173/**
 
-Paste URLs (one per line) → **Save** → search and filter.
+Optional **DEV** extension (requires dev server on port 5173):
 
-### Extension (optional)
+1. **Load unpacked** → `extension/` folder (named **Zunbreak Research Inbox (DEV)**)
+2. See [extension/README.md](extension/README.md)
 
-1. Keep `npm run dev` running (API on port **5173**)
-2. Brave/Chrome → **Extensions** → **Developer mode** → **Load unpacked**
-3. Select the `extension/` folder
-4. Pin the **Z** icon → browse → **Save to Inbox**
+Copy `data/links.example.json` → `data/links.json` for a starter file, or import your own JSON backup.
 
-See [extension/README.md](extension/README.md) for details.
-
-## Demo flow
-
-1. Highlight important text on a page
-2. Click the extension → add optional note → **Save to Inbox**
-3. Open the app → search for words from the highlighted text
-4. Found → without remembering the URL
-
-## Privacy & security
-
-- No external account or cloud backend
-- Data stays on your machine
-- Extension only reads the active tab **when you click Save**
-- No AI, no API keys in the extension
-- Local dev API validates request payloads and rejects oversized bodies
-- `data/links.json` (your inbox) is **gitignored**. Never commit your saved links.
+---
 
 ## Project structure
 
 ```
-├── src/              # React app
-├── extension/        # Brave/Chrome MV3 extension
-├── data/             # Local inbox (links.json, not in git)
-├── docs/screenshots/ # README images
+├── src/                    # React inbox app (shared by web + extension build)
+├── src/extension/          # Bundled popup + inbox entry (standalone build)
+├── extension/              # DEV extension sources + prod HTML/manifest templates
+├── scripts/                # Extension assemble + icon generation
+├── data/                   # Local inbox in dev mode (gitignored)
+├── docs/screenshots/       # README images (synthetic demo data)
 └── vite-plugin-file-backup.ts
 ```
 
 ## Tech
 
-Vite · React · TypeScript · Tailwind · Manifest V3 extension
+Vite · React · TypeScript · Tailwind · Zod · Manifest V3
+
+Storage adapters: `chrome.storage.local` (extension) · `localStorage` + file backup API (dev)
 
 ## Future ideas
 
-If there is interest, future versions may explore:
+If there is interest:
 
-- Packaged desktop app and easier browser extension distribution
+- Chrome Web Store listing (standalone build works; store submission not done yet)
+- GitHub Release with pre-built extension ZIP for non-developer installs
 - Richer import/export formats
 - Optional local AI-assisted tagging or summaries
-- MCP/agent-friendly exports for local assistant workflows
+- MCP/agent-friendly exports
 - Deeper integration with personal knowledge systems
 
 Nothing above is promised. The current tool works without AI: capture links, selected text, notes, tags, and search locally.
