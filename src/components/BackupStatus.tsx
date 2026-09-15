@@ -1,12 +1,13 @@
-import type { BackupState } from '../types'
-import { formatCapturedAt } from '../utils/date'
+import type { BackupState } from '../types.ts'
+import { formatCapturedAt } from '../utils/date.ts'
 
 interface BackupStatusProps {
   state: BackupState
   lastBackupAt: string | null
+  storageMode?: 'dev' | 'extension'
 }
 
-export function BackupStatus({ state, lastBackupAt }: BackupStatusProps) {
+export function BackupStatus({ state, lastBackupAt, storageMode = 'dev' }: BackupStatusProps) {
   const dotClass =
     state === 'active'
       ? 'bg-emerald-400/90'
@@ -24,17 +25,28 @@ export function BackupStatus({ state, lastBackupAt }: BackupStatusProps) {
       : state === 'saving'
         ? 'Saving…'
         : state === 'active'
-          ? lastBackupAt
-            ? `Auto-backup · ${formatCapturedAt(lastBackupAt)}`
-            : 'Auto-backup active'
+          ? storageMode === 'extension'
+            ? lastBackupAt
+              ? `Saved locally · ${formatCapturedAt(lastBackupAt)}`
+              : 'Saved locally in extension'
+            : lastBackupAt
+              ? `Auto-backup · ${formatCapturedAt(lastBackupAt)}`
+              : 'Auto-backup active'
           : state === 'error'
             ? 'Backup failed'
-            : 'Backup offline'
+            : storageMode === 'extension'
+              ? 'Storage offline'
+              : 'Backup offline'
+
+  const title =
+    storageMode === 'extension'
+      ? 'Links are stored in chrome.storage.local'
+      : 'Links auto-save to data/links.json while dev server runs'
 
   return (
     <div
       className="flex items-center gap-2 rounded-md px-2 py-1.5 text-[11px] text-zinc-500"
-      title="Links auto-save to data/links.json while dev server runs"
+      title={title}
     >
       <span className={`h-1.5 w-1.5 shrink-0 rounded-full ${dotClass}`} />
       <span>{label}</span>

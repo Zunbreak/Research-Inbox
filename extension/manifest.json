@@ -1,8 +1,8 @@
 {
   "manifest_version": 3,
-  "name": "Zunbreak Research Inbox",
+  "name": "Zunbreak Research Inbox (DEV)",
   "version": "1.0.0",
-  "description": "Save the current Brave tab to your local research inbox.",
+  "description": "Developer build — requires npm run dev (Vite on localhost:5173). Not for normal use.",
   "permissions": ["activeTab", "scripting", "storage"],
   "host_permissions": [
     "http://localhost:5173/*",
@@ -10,10 +10,11 @@
   ],
   "action": {
     "default_popup": "popup.html",
-    "default_title": "Save to Zunbreak Inbox"
+    "default_title": "Save to Inbox (DEV — localhost)"
   },
   "icons": {
     "16": "icons/icon16.png",
+    "32": "icons/icon32.png",
     "48": "icons/icon48.png",
     "128": "icons/icon128.png"
   }

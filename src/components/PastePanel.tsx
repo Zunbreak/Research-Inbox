@@ -3,7 +3,11 @@ import type { CaptureResult } from '../types'
 import { CollapseToggle } from './CollapseToggle'
 
 interface PastePanelProps {
-  onCapture: (text: string, defaultProject?: string, defaultTags?: string) => CaptureResult
+  onCapture: (
+    text: string,
+    defaultProject?: string,
+    defaultTags?: string,
+  ) => CaptureResult | Promise<CaptureResult>
   lastCapture: CaptureResult | null
   projectOptions: string[]
   defaultCollapsed?: boolean
@@ -22,9 +26,9 @@ export function PastePanel({
   const [defaultTags, setDefaultTags] = useState('')
   const fileRef = useRef<HTMLInputElement>(null)
 
-  const handleSave = () => {
+  const handleSave = async () => {
     const project = customProject.trim() || defaultProject
-    const result = onCapture(text, project || undefined, defaultTags.trim() || undefined)
+    const result = await onCapture(text, project || undefined, defaultTags.trim() || undefined)
     if (result.added > 0) {
       setText('')
       setCollapsed(true)
@@ -34,7 +38,7 @@ export function PastePanel({
   const handleFileImport = async (file: File) => {
     const content = await file.text()
     const project = customProject.trim() || defaultProject
-    const result = onCapture(content, project || undefined, defaultTags.trim() || undefined)
+    const result = await onCapture(content, project || undefined, defaultTags.trim() || undefined)
     if (result.added > 0) {
       setCollapsed(true)
     }

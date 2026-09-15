@@ -46,6 +46,27 @@ export function scheduleFileBackup(links: LinkItem[], recentProjects: string[]):
   })
 }
 
+export function countImportMergeStats(
+  local: LinkItem[],
+  imported: LinkItem[],
+): { added: number; alreadyExisted: number } {
+  const existing = new Set(local.map((link) => normalizeUrl(link.url)))
+  let added = 0
+  let alreadyExisted = 0
+
+  for (const link of imported) {
+    const key = normalizeUrl(link.url)
+    if (existing.has(key)) {
+      alreadyExisted += 1
+    } else {
+      added += 1
+      existing.add(key)
+    }
+  }
+
+  return { added, alreadyExisted }
+}
+
 export function mergeLinks(local: LinkItem[], remote: LinkItem[]): LinkItem[] {
   const map = new Map<string, LinkItem>()
 

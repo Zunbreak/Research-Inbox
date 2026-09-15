@@ -164,6 +164,45 @@ export function parseImportedLinks(raw: string):
   return { ok: true, links, skipped }
 }
 
+export interface StrictImportPayload {
+  links: LinkItem[]
+  recentProjects?: string[]
+}
+
+/** Strict import — validates the entire file before any write. No partial imports. */
+export function parseImportPayloadStrict(raw: string):
+  | { ok: true; value: StrictImportPayload }
+  | { ok: false; error: string } {
+  let parsed: unknown
+  try {
+    parsed = JSON.parse(raw)
+  } catch {
+    return { ok: false, error: 'Invalid JSON' }
+  }
+
+  const backupResult = backupPayloadSchema.safeParse(parsed)
+  if (backupResult.success) {
+    return {
+      ok: true,
+      value: {
+        links: backupResult.data.links as LinkItem[],
+        recentProjects: backupResult.data.recentProjects,
+      },
+    }
+  }
+
+  const arrayResult = z.array(linkItemSchema).safeParse(parsed)
+  if (arrayResult.success) {
+    return { ok: true, value: { links: arrayResult.data as LinkItem[] } }
+  }
+
+  if (parsed && typeof parsed === 'object' && !Array.isArray(parsed)) {
+    return { ok: false, error: backupResult.error.issues[0]?.message ?? 'Invalid backup file' }
+  }
+
+  return { ok: false, error: arrayResult.error.issues[0]?.message ?? 'Invalid import file' }
+}
+
 /** Lenient read for localStorage — keeps valid links, skips bad entries. */
 export function parseStoredLinks(parsed: unknown): LinkItem[] {
   if (!Array.isArray(parsed)) return []

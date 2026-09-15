@@ -1,40 +1,62 @@
-const INBOX_API = 'http://localhost:5173/api/capture-link'
-const BACKUP_API = 'http://localhost:5173/api/backup'
-const DEFAULT_PROJECT = 'Unsorted'
+import { DEFAULT_PROJECT } from '../constants.ts'
+import { addCapturedLink, sortLinksByCapturedAt } from '../lib/capture.ts'
+import { parseCaptureLinkInput } from '../lib/validation.ts'
+import { mutateChromePayload, readChromePayload } from '../storage/payload.ts'
+import type { CaptureLinkInput } from '../types.ts'
+import { normalizeProject } from '../utils/project.ts'
+import { parseDomain } from '../utils/url.ts'
 
-const projectSelect = document.getElementById('project-select')
-const projectCustom = document.getElementById('project-custom')
-const tagsInput = document.getElementById('tags')
-const whySavedInput = document.getElementById('why-saved')
-const includeSelected = document.getElementById('include-selected')
-const saveBtn = document.getElementById('save-btn')
-const statusEl = document.getElementById('status')
-const pagePreview = document.getElementById('page-preview')
-const metaPreview = document.getElementById('meta-preview')
-const selectedTextPreview = document.getElementById('selected-text-preview')
-const selectedTextBody = document.getElementById('selected-text-body')
+const POPUP_PREFS_KEY = 'popupPrefs'
 
-let activeTab = null
-let pageMeta = null
-let projectOptions = []
+interface PopupPrefs {
+  project?: string
+  tags?: string
+  whySaved?: string
+  includeSelected?: boolean
+}
 
-const openInboxBtn = document.getElementById('open-inbox')
+interface PageMeta {
+  title: string
+  description: string
+  ogTitle: string
+  ogDescription: string
+  headings: string[]
+  selectedText?: string
+}
 
-init()
+const projectSelect = document.getElementById('project-select') as HTMLSelectElement
+const projectCustom = document.getElementById('project-custom') as HTMLInputElement
+const tagsInput = document.getElementById('tags') as HTMLInputElement
+const whySavedInput = document.getElementById('why-saved') as HTMLTextAreaElement
+const includeSelected = document.getElementById('include-selected') as HTMLInputElement
+const saveBtn = document.getElementById('save-btn') as HTMLButtonElement
+const openInboxBtn = document.getElementById('open-inbox') as HTMLButtonElement
+const statusEl = document.getElementById('status') as HTMLParagraphElement
+const pagePreview = document.getElementById('page-preview') as HTMLParagraphElement
+const metaPreview = document.getElementById('meta-preview') as HTMLParagraphElement
+const selectedTextPreview = document.getElementById('selected-text-preview') as HTMLDivElement
+const selectedTextBody = document.getElementById('selected-text-body') as HTMLParagraphElement
+
+let activeTab: chrome.tabs.Tab | null = null
+let pageMeta: PageMeta | null = null
+let projectOptions: string[] = []
+
+void init()
 
 async function init() {
-  openInboxBtn?.addEventListener('click', () => {
-    chrome.tabs.create({ url: 'http://localhost:5173/' })
+  openInboxBtn.addEventListener('click', () => {
+    void chrome.tabs.create({ url: chrome.runtime.getURL('inbox.html') })
   })
+
   await loadProjectOptions()
   await loadPreferences()
   await loadActiveTab()
   await loadPageMetadata()
 }
 
-function uniqueProjects(projects) {
-  const seen = new Set()
-  const next = []
+function uniqueProjects(projects: string[]): string[] {
+  const seen = new Set<string>()
+  const next: string[] = []
 
   for (const project of projects) {
     const trimmed = project?.trim()
@@ -49,20 +71,11 @@ function uniqueProjects(projects) {
 }
 
 async function loadProjectOptions() {
-  try {
-    const response = await fetch(BACKUP_API)
-    if (!response.ok) throw new Error('Backup unavailable')
-
-    const data = await response.json()
-    projectOptions = uniqueProjects([
-      ...(data.recentProjects ?? []),
-      ...(data.links ?? []).map((link) => link.project),
-    ])
-  } catch {
-    const stored = await chrome.storage.local.get('recentProjects')
-    projectOptions = uniqueProjects(stored.recentProjects ?? [])
-  }
-
+  const payload = await readChromePayload()
+  projectOptions = uniqueProjects([
+    ...payload.recentProjects,
+    ...payload.links.map((link) => link.project),
+  ])
   renderProjectSelect()
 }
 
@@ -83,12 +96,8 @@ function renderProjectSelect(selected = projectSelect.value) {
 }
 
 async function loadPreferences() {
-  const prefs = await chrome.storage.local.get([
-    'project',
-    'tags',
-    'whySaved',
-    'includeSelected',
-  ])
+  const stored = await chrome.storage.local.get(POPUP_PREFS_KEY)
+  const prefs = (stored[POPUP_PREFS_KEY] ?? {}) as PopupPrefs
 
   if (prefs.project) {
     if (projectOptions.includes(prefs.project)) {
@@ -107,39 +116,32 @@ async function loadPreferences() {
 }
 
 async function savePreferences() {
-  await chrome.storage.local.set({
+  const prefs: PopupPrefs = {
     project: getProject(),
     tags: tagsInput.value.trim(),
     whySaved: whySavedInput.value.trim(),
     includeSelected: includeSelected.checked,
-  })
+  }
+  await chrome.storage.local.set({ [POPUP_PREFS_KEY]: prefs })
 }
 
-function getProject() {
+function getProject(): string {
   return projectCustom.value.trim() || projectSelect.value || DEFAULT_PROJECT
 }
 
-function parseTags(raw) {
+function parseTags(raw: string): string[] {
   return raw
     .split(',')
     .map((tag) => tag.trim().toLowerCase())
     .filter(Boolean)
 }
 
-function parseDomain(url) {
-  try {
-    return new URL(url).hostname.replace(/^www\./, '')
-  } catch {
-    return 'unknown'
-  }
-}
-
-function truncate(text, max = 220) {
+function truncate(text: string, max = 220): string {
   if (!text || text.length <= max) return text
   return `${text.slice(0, max).trim()}…`
 }
 
-function renderSelectedTextPreview(text) {
+function renderSelectedTextPreview(text?: string) {
   const trimmed = text?.trim()
   if (!trimmed) {
     selectedTextPreview.classList.add('hidden')
@@ -151,23 +153,23 @@ function renderSelectedTextPreview(text) {
   selectedTextPreview.classList.toggle('hidden', !includeSelected.checked)
 }
 
-function renderMetaPreview(pageMeta) {
+function renderMetaPreview(meta: PageMeta) {
   const previewParts = [
-    pageMeta.description || pageMeta.ogDescription,
-    pageMeta.headings?.slice(0, 2).join(' · '),
+    meta.description || meta.ogDescription,
+    meta.headings?.slice(0, 2).join(' · '),
   ].filter(Boolean)
 
   metaPreview.textContent = previewParts.join(' | ') || 'No page metadata found.'
 }
 
-function setStatus(message, type = '') {
+function setStatus(message: string, type = '') {
   statusEl.textContent = message
   statusEl.className = `status ${type}`.trim()
 }
 
 async function loadActiveTab() {
   const [tab] = await chrome.tabs.query({ active: true, currentWindow: true })
-  activeTab = tab
+  activeTab = tab ?? null
 
   if (!tab?.url || tab.url.startsWith('chrome://') || tab.url.startsWith('brave://')) {
     pagePreview.textContent = 'Cannot capture this page type.'
@@ -179,16 +181,16 @@ async function loadActiveTab() {
 }
 
 function capturePageMetadata() {
-  const meta = (name) =>
+  const meta = (name: string) =>
     document.querySelector(`meta[name="${name}"]`)?.getAttribute('content')?.trim() || ''
-  const prop = (property) =>
+  const prop = (property: string) =>
     document.querySelector(`meta[property="${property}"]`)?.getAttribute('content')?.trim() ||
     ''
 
   const headings = [...document.querySelectorAll('h1, h2')]
     .map((el) => el.textContent?.trim())
     .filter(Boolean)
-    .slice(0, 8)
+    .slice(0, 8) as string[]
 
   return {
     title: document.title?.trim() || '',
@@ -203,25 +205,23 @@ function captureLiveSelection() {
   return window.getSelection()?.toString()?.trim() ?? ''
 }
 
-async function getSelectedText(tab) {
-  if (!tab?.id) return ''
+async function getSelectedText(tab: chrome.tabs.Tab): Promise<string> {
+  if (!tab.id) return ''
 
-  let live = ''
   try {
     const results = await chrome.scripting.executeScript({
       target: { tabId: tab.id, allFrames: true },
       func: captureLiveSelection,
     })
-    live =
+    return (
       results
         .map((entry) => entry.result)
         .filter(Boolean)
-        .sort((a, b) => b.length - a.length)[0] ?? ''
+        .sort((a, b) => (b?.length ?? 0) - (a?.length ?? 0))[0] ?? ''
+    )
   } catch {
-    live = ''
+    return ''
   }
-
-  return live
 }
 
 async function loadPageMetadata() {
@@ -232,7 +232,7 @@ async function loadPageMetadata() {
       target: { tabId: activeTab.id },
       func: capturePageMetadata,
     })
-    pageMeta = result
+    pageMeta = result as PageMeta
     pageMeta.selectedText = await getSelectedText(activeTab)
 
     renderMetaPreview(pageMeta)
@@ -255,7 +255,11 @@ includeSelected.addEventListener('change', () => {
   renderSelectedTextPreview(pageMeta?.selectedText)
 })
 
-saveBtn.addEventListener('click', async () => {
+saveBtn.addEventListener('click', () => {
+  void handleSave()
+})
+
+async function handleSave() {
   if (!activeTab?.url) return
 
   saveBtn.disabled = true
@@ -269,7 +273,7 @@ saveBtn.addEventListener('click', async () => {
         ? pageMeta.selectedText
         : undefined
 
-    const payload = {
+    const rawInput: CaptureLinkInput = {
       url: activeTab.url,
       title: pageMeta?.title || activeTab.title || '',
       description: pageMeta?.description || undefined,
@@ -278,34 +282,57 @@ saveBtn.addEventListener('click', async () => {
       headings: pageMeta?.headings?.length ? pageMeta.headings : undefined,
       selectedText,
       source: 'extension',
-      capturedFrom: 'brave-extension',
+      capturedFrom: 'chrome-extension',
       project: getProject(),
       tags: parseTags(tagsInput.value),
       whySaved: whySavedInput.value.trim() || undefined,
     }
 
-    const response = await fetch(INBOX_API, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(payload),
-    })
-
-    if (!response.ok) {
-      throw new Error('Inbox request failed')
+    const validated = parseCaptureLinkInput(rawInput)
+    if (!validated.ok) {
+      setStatus(validated.error, 'error')
+      return
     }
 
-    const result = await response.json()
+    const input = validated.value
+    const outcome = { status: 'created' as 'created' | 'duplicate' }
+
+    await mutateChromePayload(async (current) => {
+      const { links, result } = addCapturedLink(current.links, {
+        ...input,
+        source: 'extension',
+        project: input.project ? normalizeProject(input.project) : undefined,
+      })
+      outcome.status = result.status === 'duplicate' ? 'duplicate' : 'created'
+
+      if (result.status !== 'created') {
+        return current
+      }
+
+      const project = input.project ? normalizeProject(input.project) : DEFAULT_PROJECT
+      const recentProjects = [
+        project,
+        ...current.recentProjects.filter((item) => item.toLowerCase() !== project.toLowerCase()),
+      ].slice(0, 12)
+
+      return {
+        ...current,
+        links: sortLinksByCapturedAt(links),
+        recentProjects,
+      }
+    })
+
     await savePreferences()
     await loadProjectOptions()
 
-    if (result.status === 'duplicate') {
+    if (outcome.status === 'duplicate') {
       setStatus('Already in inbox.', 'warn')
     } else {
       setStatus('Saved to inbox.', 'ok')
     }
   } catch {
-    setStatus('Start Zunbreak Research Inbox first (npm run dev).', 'error')
+    setStatus('Could not save to inbox.', 'error')
   } finally {
     saveBtn.disabled = false
   }
-})
+}

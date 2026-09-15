@@ -1,6 +1,6 @@
-import { RECENT_PROJECTS_KEY, STORAGE_KEY } from '../constants'
-import { parseImportedLinks, parseStoredLinks } from '../lib/validation'
-import type { LinkItem } from '../types'
+import { RECENT_PROJECTS_KEY, STORAGE_KEY } from '../constants.ts'
+import { parseImportPayloadStrict, parseStoredLinks } from '../lib/validation.ts'
+import type { LinkItem } from '../types.ts'
 
 export function loadLinks(): LinkItem[] {
   try {
@@ -37,13 +37,16 @@ export function exportLinksJson(links: LinkItem[]): string {
 
 export interface ImportLinksResult {
   links: LinkItem[]
-  skipped: number
+  recentProjects?: string[]
 }
 
 export function importLinksJson(raw: string): ImportLinksResult {
-  const result = parseImportedLinks(raw)
+  const result = parseImportPayloadStrict(raw)
   if (!result.ok) {
     throw new Error(result.error)
   }
-  return { links: result.links, skipped: result.skipped }
+  return {
+    links: result.value.links,
+    recentProjects: result.value.recentProjects,
+  }
 }

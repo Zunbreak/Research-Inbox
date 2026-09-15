@@ -19,10 +19,12 @@ export default function App() {
     lastCapture,
     backupState,
     lastBackupAt,
+    lastExportedAt,
+    storageMode,
     captureFromText,
     updateLink,
     deleteLink,
-    exportJson,
+    exportBackup,
     importJson,
   } = useLinks()
 
@@ -56,8 +58,18 @@ export default function App() {
             <p className="text-sm text-zinc-500">Capture now. Find later. Close the tabs.</p>
           </div>
           <div className="flex flex-wrap items-center gap-2">
-            <BackupStatus state={backupState} lastBackupAt={lastBackupAt} />
-            <BackupMenu onExport={exportJson} onImport={importJson} linkCount={links.length} />
+            <BackupStatus
+              state={backupState}
+              lastBackupAt={lastBackupAt}
+              storageMode={storageMode}
+            />
+            <BackupMenu
+              onExport={exportBackup}
+              onImport={importJson}
+              linkCount={links.length}
+              lastExportedAt={lastExportedAt}
+              storageMode={storageMode}
+            />
           </div>
         </div>
       </header>
