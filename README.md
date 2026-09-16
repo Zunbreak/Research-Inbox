@@ -60,7 +60,7 @@ Bookmarks save links. Research Inbox saves **context**:
 - project and tags for later filtering
 - searchable page metadata (title, description, headings)
 
-I built this because 200 open tabs is not a research system.
+I built this because 200 open tabs aren't a research system.
 
 ---
 
