@@ -1,0 +1,90 @@
+/* Full rgb() values — Tailwind v4 @theme inline maps via var(--token). */
+
+:root[data-theme='dark'] {
+  --background: rgb(10 10 11);
+  --surface: rgb(24 24 27);
+  --surface-elevated: rgb(9 9 11);
+  --border: rgb(39 39 42);
+  --border-strong: rgb(63 63 70);
+
+  --foreground: rgb(244 244 245);
+  --foreground-secondary: rgb(228 228 231);
+  --foreground-tertiary: rgb(212 212 216);
+  --muted: rgb(161 161 170);
+  --subtle: rgb(113 113 122);
+  --faint: rgb(82 82 91);
+
+  --accent: rgb(124 58 237);
+  --accent-hover: rgb(139 92 246);
+  --accent-soft: rgb(46 16 101);
+  --accent-foreground: rgb(196 181 253);
+  --accent-foreground-soft: rgb(221 214 254);
+
+  --success: rgb(52 211 153);
+  --warning: rgb(251 191 36);
+  --danger: rgb(248 113 113);
+  --danger-foreground: rgb(254 202 202);
+  --danger-soft: rgb(69 10 10);
+
+  --overlay: rgb(0 0 0);
+  --scrollbar-thumb: #3f3f46;
+
+  /* Component tokens — final colors, no /opacity utilities needed */
+  --selected-text-bg: rgb(46 16 101 / 0.2);
+  --selected-text-border: rgb(139 92 246 / 0.4);
+  --selected-text-label: rgb(167 139 250 / 0.7);
+  --sidebar-active-bg: rgb(124 58 237 / 0.2);
+  --sidebar-active-text: rgb(221 214 254);
+  --filter-active-bg: rgb(46 16 101 / 0.3);
+  --filter-active-border: rgb(124 58 237 / 0.4);
+  --filter-active-text: rgb(221 214 254);
+  --project-chip-bg: rgb(46 16 101 / 0.6);
+  --project-chip-text: rgb(196 181 253);
+  --project-chip-hover: rgb(46 16 101 / 0.9);
+  --danger-surface-bg: rgb(69 10 10 / 0.05);
+  --danger-surface-border: rgb(69 10 10 / 0.4);
+}
+
+:root[data-theme='light'] {
+  --background: rgb(250 250 250);
+  --surface: rgb(255 255 255);
+  --surface-elevated: rgb(244 244 245);
+  --border: rgb(228 228 231);
+  --border-strong: rgb(212 212 216);
+
+  --foreground: rgb(24 24 27);
+  --foreground-secondary: rgb(39 39 42);
+  --foreground-tertiary: rgb(63 63 70);
+  --muted: rgb(113 113 122);
+  --subtle: rgb(82 82 91);
+  --faint: rgb(161 161 170);
+
+  --accent: rgb(124 58 237);
+  --accent-hover: rgb(109 40 217);
+  --accent-soft: rgb(237 233 254);
+  --accent-foreground: rgb(109 40 217);
+  --accent-foreground-soft: rgb(91 33 182);
+
+  --success: rgb(5 150 105);
+  --warning: rgb(217 119 6);
+  --danger: rgb(220 38 38);
+  --danger-foreground: rgb(185 28 28);
+  --danger-soft: rgb(254 242 242);
+
+  --overlay: rgb(0 0 0);
+  --scrollbar-thumb: #d4d4d8;
+
+  --selected-text-bg: rgb(237 233 254);
+  --selected-text-border: rgb(124 58 237 / 0.35);
+  --selected-text-label: rgb(109 40 217 / 0.85);
+  --sidebar-active-bg: rgb(237 233 254);
+  --sidebar-active-text: rgb(91 33 182);
+  --filter-active-bg: rgb(237 233 254);
+  --filter-active-border: rgb(124 58 237 / 0.35);
+  --filter-active-text: rgb(91 33 182);
+  --project-chip-bg: rgb(237 233 254);
+  --project-chip-text: rgb(109 40 217);
+  --project-chip-hover: rgb(221 214 254);
+  --danger-surface-bg: rgb(254 242 242);
+  --danger-surface-border: rgb(254 202 202);
+}

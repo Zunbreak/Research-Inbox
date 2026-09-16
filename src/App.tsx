@@ -6,6 +6,7 @@ import { FilterSidebar } from './components/FilterSidebar'
 import { LinkList } from './components/LinkList'
 import { PastePanel } from './components/PastePanel'
 import { SearchBar } from './components/SearchBar'
+import { ThemeSelector } from './components/ThemeSelector'
 import { useLinks } from './hooks/useLinks'
 
 export default function App() {
@@ -51,18 +52,19 @@ export default function App() {
 
   return (
     <div className="flex min-h-screen flex-col">
-      <header className="border-b border-zinc-800 bg-zinc-950 px-4 py-3.5">
+      <header className="border-b border-border bg-surface-elevated px-4 py-3.5">
         <div className="mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-3">
           <div>
-            <h1 className="text-lg font-semibold tracking-tight text-zinc-100">Research Inbox</h1>
-            <p className="text-sm text-zinc-500">Capture now. Find later. Close the tabs.</p>
+            <h1 className="text-lg font-semibold tracking-tight text-foreground">Research Inbox</h1>
+            <p className="text-sm text-subtle">Capture now. Find later. Close the tabs.</p>
           </div>
-          <div className="flex flex-wrap items-center gap-2">
+          <div className="flex flex-wrap items-center justify-end gap-x-3 gap-y-2">
             <BackupStatus
               state={backupState}
               lastBackupAt={lastBackupAt}
               storageMode={storageMode}
             />
+            <ThemeSelector />
             <BackupMenu
               onExport={exportBackup}
               onImport={importJson}
@@ -92,7 +94,7 @@ export default function App() {
             defaultCollapsed={links.length > 0}
           />
 
-          <section className="space-y-3 rounded-lg border border-zinc-800/50 bg-zinc-900/20 p-3.5">
+          <section className="space-y-3 rounded-lg border border-border/50 bg-surface/20 p-3.5">
             <SearchBar
               filters={filters}
               onChange={applyFilters}
@@ -127,8 +129,8 @@ export default function App() {
         </main>
       </div>
 
-      <footer className="border-t border-zinc-800/80 px-4 py-2">
-        <p className="mx-auto max-w-7xl text-center text-[11px] text-zinc-600">
+      <footer className="border-t border-border/80 px-4 py-2">
+        <p className="mx-auto max-w-7xl text-center text-[11px] text-faint">
           Built by Zunbreak
         </p>
       </footer>

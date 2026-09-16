@@ -30,12 +30,12 @@ function FilterButton({
       onClick={onClick}
       className={`flex w-full items-center justify-between rounded px-2 py-1.5 text-left text-xs transition-colors ${
         active
-          ? 'bg-violet-600/20 text-violet-200'
-          : 'text-zinc-400 hover:bg-zinc-800 hover:text-zinc-200'
+          ? 'bg-sidebar-active-bg text-sidebar-active-text'
+          : 'text-muted hover:bg-border hover:text-foreground-secondary'
       }`}
     >
       <span className="truncate">{label}</span>
-      {count !== undefined && <span className="ml-2 shrink-0 text-zinc-600">{count}</span>}
+      {count !== undefined && <span className="ml-2 shrink-0 text-faint">{count}</span>}
     </button>
   )
 }
@@ -43,7 +43,7 @@ function FilterButton({
 function FilterSection({ title, children }: { title: string; children: ReactNode }) {
   return (
     <div className="mb-4">
-      <h3 className="mb-1.5 px-2 text-[10px] font-semibold uppercase tracking-wider text-zinc-600">
+      <h3 className="mb-1.5 px-2 text-[10px] font-semibold uppercase tracking-wider text-faint">
         {title}
       </h3>
       <div className="space-y-0.5">{children}</div>
@@ -67,7 +67,7 @@ export function FilterSidebar({ filters, onChange, facetCounts }: FilterSidebarP
   const hiddenCount = projects.length - VISIBLE_PROJECT_COUNT
 
   return (
-    <aside className="w-44 shrink-0 overflow-y-auto border-r border-zinc-800 bg-zinc-950/50 p-3">
+    <aside className="w-44 shrink-0 overflow-y-auto border-r border-border bg-surface-elevated/50 p-3">
       <FilterSection title="Status">
         <FilterButton
           active={filters.status === 'all'}
@@ -105,10 +105,10 @@ export function FilterSidebar({ filters, onChange, facetCounts }: FilterSidebarP
           <button
             type="button"
             onClick={() => setProjectsExpanded((open) => !open)}
-            className="flex w-full items-center justify-between rounded px-2 py-1.5 text-left text-[11px] text-zinc-500 transition-colors hover:bg-zinc-800/60 hover:text-zinc-300"
+            className="flex w-full items-center justify-between rounded px-2 py-1.5 text-left text-[11px] text-subtle transition-colors hover:bg-border/60 hover:text-foreground-tertiary"
           >
             <span>{expanded ? 'Show less' : `Show all (${projects.length})`}</span>
-            <span className="ml-2 shrink-0 text-zinc-600" aria-hidden="true">
+            <span className="ml-2 shrink-0 text-faint" aria-hidden="true">
               {expanded ? '▴' : `+${hiddenCount}`}
             </span>
           </button>
@@ -117,4 +117,3 @@ export function FilterSidebar({ filters, onChange, facetCounts }: FilterSidebarP
     </aside>
   )
 }
-

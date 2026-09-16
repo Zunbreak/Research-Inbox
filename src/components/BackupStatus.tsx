@@ -10,14 +10,14 @@ interface BackupStatusProps {
 export function BackupStatus({ state, lastBackupAt, storageMode = 'dev' }: BackupStatusProps) {
   const dotClass =
     state === 'active'
-      ? 'bg-emerald-400/90'
+      ? 'bg-success/90'
       : state === 'saving'
-        ? 'bg-amber-400 animate-pulse'
+        ? 'bg-warning animate-pulse'
         : state === 'loading'
-          ? 'bg-zinc-500 animate-pulse'
+          ? 'bg-subtle animate-pulse'
           : state === 'error'
-            ? 'bg-red-400'
-            : 'bg-zinc-600'
+            ? 'bg-danger'
+            : 'bg-faint'
 
   const label =
     state === 'loading'
@@ -45,7 +45,7 @@ export function BackupStatus({ state, lastBackupAt, storageMode = 'dev' }: Backu
 
   return (
     <div
-      className="flex items-center gap-2 rounded-md px-2 py-1.5 text-[11px] text-zinc-500"
+      className="flex items-center gap-2 rounded-md px-2 py-1.5 text-[11px] text-subtle"
       title={title}
     >
       <span className={`h-1.5 w-1.5 shrink-0 rounded-full ${dotClass}`} />

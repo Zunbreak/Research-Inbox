@@ -1,10 +1,49 @@
 @import 'tailwindcss';
+@import './theme/tokens.css';
+
+@theme inline {
+  --color-background: var(--background);
+  --color-surface: var(--surface);
+  --color-surface-elevated: var(--surface-elevated);
+  --color-border: var(--border);
+  --color-border-strong: var(--border-strong);
+  --color-foreground: var(--foreground);
+  --color-foreground-secondary: var(--foreground-secondary);
+  --color-foreground-tertiary: var(--foreground-tertiary);
+  --color-muted: var(--muted);
+  --color-subtle: var(--subtle);
+  --color-faint: var(--faint);
+  --color-accent: var(--accent);
+  --color-accent-hover: var(--accent-hover);
+  --color-accent-soft: var(--accent-soft);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent-foreground-soft: var(--accent-foreground-soft);
+  --color-success: var(--success);
+  --color-warning: var(--warning);
+  --color-danger: var(--danger);
+  --color-danger-foreground: var(--danger-foreground);
+  --color-danger-soft: var(--danger-soft);
+  --color-overlay: var(--overlay);
+  --color-selected-text-bg: var(--selected-text-bg);
+  --color-selected-text-border: var(--selected-text-border);
+  --color-selected-text-label: var(--selected-text-label);
+  --color-sidebar-active-bg: var(--sidebar-active-bg);
+  --color-sidebar-active-text: var(--sidebar-active-text);
+  --color-filter-active-bg: var(--filter-active-bg);
+  --color-filter-active-border: var(--filter-active-border);
+  --color-filter-active-text: var(--filter-active-text);
+  --color-project-chip-bg: var(--project-chip-bg);
+  --color-project-chip-text: var(--project-chip-text);
+  --color-project-chip-hover: var(--project-chip-hover);
+  --color-danger-surface-bg: var(--danger-surface-bg);
+  --color-danger-surface-border: var(--danger-surface-border);
+}
 
 body {
   margin: 0;
   min-height: 100vh;
-  background: #0a0a0b;
-  color: #e4e4e7;
+  background: var(--background);
+  color: var(--foreground-secondary);
   font-family: system-ui, -apple-system, 'Segoe UI', sans-serif;
 }
 
@@ -25,6 +64,6 @@ button {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #3f3f46;
+  background: var(--scrollbar-thumb);
   border-radius: 3px;
 }

@@ -66,17 +66,17 @@ export function ActiveFilterChips({ filters, onChange, onClearAll }: ActiveFilte
           key={chip.key}
           type="button"
           onClick={() => onChange(chip.clear)}
-          className="inline-flex items-center gap-1.5 rounded-full border border-zinc-700/60 bg-zinc-900/80 px-2.5 py-1 text-xs text-zinc-300 transition-colors hover:border-zinc-600 hover:bg-zinc-800"
+          className="inline-flex items-center gap-1.5 rounded-full border border-border-strong/60 bg-surface/80 px-2.5 py-1 text-xs text-foreground-tertiary transition-colors hover:border-faint hover:bg-border"
         >
           <span className="truncate">{chip.label}</span>
-          <span className="text-zinc-500">✕</span>
+          <span className="text-subtle">✕</span>
         </button>
       ))}
       {chips.length > 1 && (
         <button
           type="button"
           onClick={onClearAll}
-          className="text-xs text-zinc-600 hover:text-zinc-400"
+          className="text-xs text-faint hover:text-muted"
         >
           Clear all
         </button>

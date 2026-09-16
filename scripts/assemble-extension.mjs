@@ -25,8 +25,18 @@ function copyDirIfExists(from, to) {
   }
 }
 
+const themeTokensSrc = path.join(root, 'src', 'theme', 'tokens.css')
+const themeTokensExtension = path.join(root, 'extension', 'theme-tokens.css')
+if (fs.existsSync(themeTokensSrc)) {
+  const tokens = fs.readFileSync(themeTokensSrc, 'utf-8')
+  const popupTokens = `/* Synced from src/theme/tokens.css via assemble-extension.mjs */\n\n${tokens.trim()}\n`
+  fs.writeFileSync(themeTokensExtension, popupTokens)
+  fs.writeFileSync(path.join(outDir, 'theme-tokens.css'), popupTokens)
+}
+
 copyIfExists(path.join(root, 'extension', 'manifest.prod.json'), path.join(outDir, 'manifest.json'))
 copyIfExists(path.join(root, 'extension', 'popup.css'), path.join(outDir, 'popup.css'))
+copyIfExists(path.join(root, 'extension', 'theme-init.js'), path.join(outDir, 'theme-init.js'))
 copyDirIfExists(path.join(root, 'extension', 'icons'), path.join(outDir, 'icons'))
 
 function fixExtensionAssetPaths(html) {

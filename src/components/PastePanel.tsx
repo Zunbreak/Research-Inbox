@@ -48,15 +48,15 @@ export function PastePanel({
 
   if (collapsed) {
     return (
-      <section className="rounded-lg border border-zinc-800/50 bg-zinc-900/20">
+      <section className="rounded-lg border border-border/50 bg-surface/20">
         <button
           type="button"
           onClick={() => setCollapsed(false)}
-          className="flex w-full items-center justify-between gap-3 px-4 py-2.5 text-left hover:bg-zinc-900/40"
+          className="flex w-full items-center justify-between gap-3 px-4 py-2.5 text-left hover:bg-surface/40"
         >
           <div className="min-w-0">
-            <span className="text-xs font-medium text-zinc-400">Capture</span>
-            <span className="ml-2 text-[11px] text-zinc-600">Paste URLs · tags · import .txt</span>
+            <span className="text-xs font-medium text-muted">Capture</span>
+            <span className="ml-2 text-[11px] text-faint">Paste URLs · tags · import .txt</span>
           </div>
           <CollapseToggle expanded={false} />
         </button>
@@ -65,21 +65,21 @@ export function PastePanel({
   }
 
   return (
-    <section className="rounded-lg border border-zinc-800/60 bg-zinc-900/30 p-4">
+    <section className="rounded-lg border border-border/60 bg-surface/30 p-4">
       <button
         type="button"
         onClick={() => setCollapsed(true)}
-        className="-mx-1 mb-3 flex w-[calc(100%+0.5rem)] items-center justify-between gap-3 rounded-md px-1 py-1 text-left hover:bg-zinc-900/40"
+        className="-mx-1 mb-3 flex w-[calc(100%+0.5rem)] items-center justify-between gap-3 rounded-md px-1 py-1 text-left hover:bg-surface/40"
       >
         <div className="min-w-0">
-          <span className="text-sm font-semibold text-zinc-200">Capture</span>
-          <span className="ml-2 text-xs text-zinc-600">Paste URLs — one per line</span>
+          <span className="text-sm font-semibold text-foreground-secondary">Capture</span>
+          <span className="ml-2 text-xs text-faint">Paste URLs — one per line</span>
         </div>
         <CollapseToggle expanded={true} />
       </button>
 
       <div className="mb-3 space-y-3">
-        <p className="text-xs text-zinc-600">
+        <p className="text-xs text-faint">
           Default project · pick existing or type a new name
         </p>
         <div className="flex flex-wrap items-center gap-2">
@@ -89,7 +89,7 @@ export function PastePanel({
               setDefaultProject(e.target.value)
               setCustomProject('')
             }}
-            className="rounded-md border border-zinc-800/80 bg-zinc-950/80 px-2.5 py-2 text-sm text-zinc-200"
+            className="rounded-md border border-border/80 bg-surface-elevated/80 px-2.5 py-2 text-sm text-foreground-secondary"
           >
             <option value="">No default project</option>
             {projectOptions.map((project) => (
@@ -103,7 +103,7 @@ export function PastePanel({
             value={customProject}
             onChange={(e) => setCustomProject(e.target.value)}
             placeholder="New project name…"
-            className="min-w-[140px] flex-1 rounded-md border border-zinc-800/80 bg-zinc-950/80 px-2.5 py-2 text-sm text-zinc-200 placeholder:text-zinc-600"
+            className="min-w-[140px] flex-1 rounded-md border border-border/80 bg-surface-elevated/80 px-2.5 py-2 text-sm text-foreground-secondary placeholder:text-faint"
           />
         </div>
         <input
@@ -111,7 +111,7 @@ export function PastePanel({
           value={defaultTags}
           onChange={(e) => setDefaultTags(e.target.value)}
           placeholder="Tags · mcp, agents, docs"
-          className="w-full rounded-md border border-zinc-800/80 bg-zinc-950/80 px-2.5 py-2 text-sm text-zinc-200 placeholder:text-zinc-600"
+          className="w-full rounded-md border border-border/80 bg-surface-elevated/80 px-2.5 py-2 text-sm text-foreground-secondary placeholder:text-faint"
         />
       </div>
 
@@ -120,14 +120,14 @@ export function PastePanel({
         onChange={(e) => setText(e.target.value)}
         placeholder="https://example.com/article&#10;https://github.com/something&#10;..."
         rows={4}
-        className="mb-3 w-full resize-y rounded-md border border-zinc-800/80 bg-zinc-950/80 px-3 py-2.5 font-mono text-sm text-zinc-200 placeholder:text-zinc-600 focus:border-violet-500/50 focus:outline-none"
+        className="mb-3 w-full resize-y rounded-md border border-border/80 bg-surface-elevated/80 px-3 py-2.5 font-mono text-sm text-foreground-secondary placeholder:text-faint focus:border-accent/50 focus:outline-none"
       />
 
       <div className="flex flex-wrap items-center justify-between gap-2">
         <button
           type="button"
           onClick={() => fileRef.current?.click()}
-          className="rounded-md border border-zinc-800/80 px-3 py-2 text-sm text-zinc-400 hover:bg-zinc-800/60 hover:text-zinc-200"
+          className="rounded-md border border-border/80 px-3 py-2 text-sm text-muted hover:bg-border/60 hover:text-foreground-secondary"
         >
           Import .txt
         </button>
@@ -146,14 +146,14 @@ export function PastePanel({
           type="button"
           onClick={handleSave}
           disabled={!text.trim()}
-          className="rounded-md bg-violet-600 px-5 py-2 text-sm font-medium text-white hover:bg-violet-500 disabled:cursor-not-allowed disabled:opacity-40"
+          className="rounded-md bg-accent px-5 py-2 text-sm font-medium text-white hover:bg-accent-hover disabled:cursor-not-allowed disabled:opacity-40"
         >
           Save {lineCount > 0 ? `(${lineCount})` : ''}
         </button>
       </div>
 
       {lastCapture && (
-        <p className="mt-2 text-[11px] text-zinc-600">
+        <p className="mt-2 text-[11px] text-faint">
           Last save: {lastCapture.added} added, {lastCapture.duplicates} duplicates skipped
           {lastCapture.invalid > 0 ? `, ${lastCapture.invalid} invalid lines` : ''}
         </p>
