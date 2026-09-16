@@ -1,4 +1,4 @@
-# Zunbreak Research Inbox
+# 🧙‍♂️ Zunbreak Research Inbox
 
 ![MIT License](https://img.shields.io/badge/license-MIT-blue.svg)
 ![Local First](https://img.shields.io/badge/local--first-yes-brightgreen)
