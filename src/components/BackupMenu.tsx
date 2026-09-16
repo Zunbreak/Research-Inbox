@@ -104,25 +104,25 @@ export function BackupMenu({
         <button
           type="button"
           onClick={() => setOpen((value) => !value)}
-          className="flex items-center gap-1.5 rounded-md border border-zinc-800/80 bg-zinc-900/40 px-3 py-1.5 text-[11px] text-zinc-400 hover:border-zinc-700 hover:bg-zinc-900 hover:text-zinc-200"
+          className="flex items-center gap-1.5 rounded-md border border-border/80 bg-surface/40 px-3 py-1.5 text-[11px] text-muted hover:border-border-strong hover:bg-surface hover:text-foreground-secondary"
           aria-expanded={open}
           aria-haspopup="menu"
         >
           Backup & Restore
-          <span className="text-[10px] text-zinc-600">{open ? '▴' : '▾'}</span>
+          <span className="text-[10px] text-faint">{open ? '▴' : '▾'}</span>
         </button>
 
         {open && (
           <div
             role="menu"
-            className="absolute right-0 z-20 mt-1.5 min-w-[210px] rounded-md border border-zinc-800/80 bg-zinc-950 py-1 shadow-lg shadow-black/40"
+            className="absolute right-0 z-20 mt-1.5 min-w-[210px] rounded-md border border-border/80 bg-surface-elevated py-1 shadow-lg shadow-overlay/40"
           >
             <button
               type="button"
               role="menuitem"
               onClick={() => void handleExport()}
               disabled={linkCount === 0}
-              className="block w-full px-3 py-2 text-left text-xs text-zinc-300 hover:bg-zinc-900 disabled:cursor-not-allowed disabled:opacity-40"
+              className="block w-full px-3 py-2 text-left text-xs text-foreground-tertiary hover:bg-surface disabled:cursor-not-allowed disabled:opacity-40"
             >
               Export backup
             </button>
@@ -130,19 +130,19 @@ export function BackupMenu({
               type="button"
               role="menuitem"
               onClick={() => fileRef.current?.click()}
-              className="block w-full px-3 py-2 text-left text-xs text-zinc-300 hover:bg-zinc-900"
+              className="block w-full px-3 py-2 text-left text-xs text-foreground-tertiary hover:bg-surface"
             >
               Import backup
             </button>
-            <div className="border-t border-zinc-800/80 px-3 py-2">
-              <p className="text-[10px] text-zinc-500">Last exported</p>
+            <div className="border-t border-border/80 px-3 py-2">
+              <p className="text-[10px] text-subtle">Last exported</p>
               <p
-                className={`mt-0.5 text-[11px] ${lastExportedAt ? 'text-zinc-400' : 'text-zinc-600'}`}
+                className={`mt-0.5 text-[11px] ${lastExportedAt ? 'text-muted' : 'text-faint'}`}
               >
                 {lastExportedLabel}
               </p>
             </div>
-            <p className="border-t border-zinc-800/80 px-3 py-2 text-[10px] leading-relaxed text-zinc-600">
+            <p className="border-t border-border/80 px-3 py-2 text-[10px] leading-relaxed text-faint">
               {storageMode === 'extension'
                 ? 'Manual copy of your local extension data'
                 : 'Extra copy beyond auto-backup to data/links.json'}

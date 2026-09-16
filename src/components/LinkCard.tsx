@@ -64,24 +64,24 @@ export function LinkCard({ link, projectOptions, onUpdate, onDelete, onFilter }:
   }
 
   const inputClass =
-    'w-full rounded-md border border-zinc-800/80 bg-zinc-950/80 px-2.5 py-1.5 text-xs text-zinc-200 placeholder:text-zinc-600 focus:border-violet-500/50 focus:outline-none'
-  const labelClass = 'mb-1 block text-[10px] font-medium uppercase tracking-wide text-zinc-600'
+    'w-full rounded-md border border-border/80 bg-surface-elevated/80 px-2.5 py-1.5 text-xs text-foreground-secondary placeholder:text-faint focus:border-accent/50 focus:outline-none'
+  const labelClass = 'mb-1 block text-[10px] font-medium uppercase tracking-wide text-faint'
 
   const chipClass =
-    'rounded-full px-2 py-0.5 text-[11px] transition-colors focus:outline-none focus-visible:ring-1 focus-visible:ring-violet-500/50'
-  const chipButtonClass = `${chipClass} cursor-pointer hover:ring-1 hover:ring-zinc-600/60`
+    'rounded-full px-2 py-0.5 text-[11px] transition-colors focus:outline-none focus-visible:ring-1 focus-visible:ring-accent/50'
+  const chipButtonClass = `${chipClass} cursor-pointer hover:ring-1 hover:ring-faint/60`
 
   const cardTone =
     link.status === 'archive'
-      ? 'border-zinc-800/40 bg-zinc-900/10 opacity-80'
+      ? 'border-border/40 bg-surface/10 opacity-80'
       : link.status === 'trash'
-        ? 'border-red-950/40 bg-red-950/5 opacity-75'
-        : 'border-zinc-800/60 bg-zinc-900/20'
+        ? 'border-danger-soft/40 bg-danger-soft/5 opacity-75'
+        : 'border-border/60 bg-surface/20'
 
   if (!editing) {
     return (
       <article
-        className={`group rounded-lg border px-4 py-3.5 transition-colors hover:border-zinc-700/80 hover:bg-zinc-900/35 ${cardTone}`}
+        className={`group rounded-lg border px-4 py-3.5 transition-colors hover:border-border-strong/80 hover:bg-surface/35 ${cardTone}`}
       >
         <div className="flex items-start gap-3">
           <div className="min-w-0 flex-1">
@@ -89,10 +89,10 @@ export function LinkCard({ link, projectOptions, onUpdate, onDelete, onFilter }:
               href={link.url}
               target="_blank"
               rel="noopener noreferrer"
-              className={`mb-2 block text-base font-medium leading-snug hover:text-violet-200 ${
+              className={`mb-2 block text-base font-medium leading-snug hover:text-accent-foreground-soft ${
                 link.status === 'trash'
-                  ? 'text-zinc-500 line-through decoration-zinc-600'
-                  : 'text-zinc-100'
+                  ? 'text-subtle line-through decoration-faint'
+                  : 'text-foreground'
               }`}
             >
               {displayTitle}
@@ -103,26 +103,26 @@ export function LinkCard({ link, projectOptions, onUpdate, onDelete, onFilter }:
                 <button
                   type="button"
                   onClick={() => onFilter({ domain: link.domain })}
-                  className={`${chipButtonClass} bg-zinc-800/80 text-zinc-400 hover:bg-zinc-800 hover:text-zinc-200`}
+                  className={`${chipButtonClass} bg-border/80 text-muted hover:bg-border hover:text-foreground-secondary`}
                   title={`Filter by ${link.domain}`}
                 >
                   {link.domain}
                 </button>
               ) : (
-                <span className={`${chipClass} bg-zinc-800/80 text-zinc-400`}>{link.domain}</span>
+                <span className={`${chipClass} bg-border/80 text-muted`}>{link.domain}</span>
               )}
               {link.project !== 'Unsorted' &&
                 (onFilter ? (
                   <button
                     type="button"
                     onClick={() => onFilter({ project: link.project })}
-                    className={`${chipButtonClass} bg-violet-950/60 text-violet-300 hover:bg-violet-950/90`}
+                    className={`${chipButtonClass} bg-accent-soft/60 text-accent-foreground hover:bg-accent-soft/90`}
                     title={`Filter by ${link.project}`}
                   >
                     {link.project}
                   </button>
                 ) : (
-                  <span className={`${chipClass} bg-violet-950/60 text-violet-300`}>
+                  <span className={`${chipClass} bg-accent-soft/60 text-accent-foreground`}>
                     {link.project}
                   </span>
                 ))}
@@ -132,16 +132,13 @@ export function LinkCard({ link, projectOptions, onUpdate, onDelete, onFilter }:
                     key={tag}
                     type="button"
                     onClick={() => onFilter({ tag })}
-                    className={`${chipButtonClass} bg-zinc-800/50 text-zinc-500 hover:bg-zinc-800 hover:text-zinc-300`}
+                    className={`${chipButtonClass} bg-border/50 text-subtle hover:bg-border hover:text-foreground-tertiary`}
                     title={`Filter by ${tag}`}
                   >
                     {tag}
                   </button>
                 ) : (
-                  <span
-                    key={tag}
-                    className={`${chipClass} bg-zinc-800/50 text-zinc-500`}
-                  >
+                  <span key={tag} className={`${chipClass} bg-border/50 text-subtle`}>
                     {tag}
                   </span>
                 ),
@@ -150,34 +147,34 @@ export function LinkCard({ link, projectOptions, onUpdate, onDelete, onFilter }:
                 <button
                   type="button"
                   onClick={() => onFilter({ status: link.status })}
-                  className={`${chipButtonClass} bg-zinc-800/40 text-zinc-600 hover:bg-zinc-800 hover:text-zinc-400`}
+                  className={`${chipButtonClass} bg-border/40 text-faint hover:bg-border hover:text-muted`}
                   title={`Filter by ${statusLabel(link.status)}`}
                 >
                   {statusLabel(link.status)}
                 </button>
               ) : (
-                <span className={`${chipClass} bg-zinc-800/40 text-zinc-600`}>
+                <span className={`${chipClass} bg-border/40 text-faint`}>
                   {statusLabel(link.status)}
                 </span>
               )}
             </div>
 
             {selectedText && (
-              <div className="mb-2 rounded-md border-l-2 border-violet-500/40 bg-violet-950/20 px-3 py-2">
-                <p className="mb-1 text-[10px] font-medium uppercase tracking-wide text-violet-400/70">
+              <div className="mb-2 rounded-md border-l-2 border-accent/40 bg-accent-soft/20 px-3 py-2">
+                <p className="mb-1 text-[10px] font-medium uppercase tracking-wide text-accent-foreground/70">
                   Selected text
                 </p>
-                <p className="line-clamp-3 text-sm italic leading-relaxed text-zinc-400">
+                <p className="line-clamp-3 text-sm italic leading-relaxed text-muted">
                   “{truncate(selectedText)}”
                 </p>
               </div>
             )}
 
             {showNote && (
-              <p className="line-clamp-2 text-sm leading-relaxed text-zinc-500">{noteSnippet}</p>
+              <p className="line-clamp-2 text-sm leading-relaxed text-subtle">{noteSnippet}</p>
             )}
 
-            <p className="mt-2 text-[10px] text-zinc-700">{captured}</p>
+            <p className="mt-2 text-[10px] text-faint/70">{captured}</p>
           </div>
 
           <div className="flex shrink-0 flex-col gap-1 opacity-70 transition-opacity group-hover:opacity-100">
@@ -188,14 +185,14 @@ export function LinkCard({ link, projectOptions, onUpdate, onDelete, onFilter }:
                 setTagsDraft(formatTags(link.tags))
                 setEditing(true)
               }}
-              className="rounded-md px-2.5 py-1 text-[11px] text-zinc-400 hover:bg-zinc-800 hover:text-zinc-200"
+              className="rounded-md px-2.5 py-1 text-[11px] text-muted hover:bg-border hover:text-foreground-secondary"
             >
               Edit
             </button>
             <button
               type="button"
               onClick={() => onDelete(link.id)}
-              className="rounded-md px-2.5 py-1 text-[11px] text-zinc-600 hover:bg-red-950/50 hover:text-red-400"
+              className="rounded-md px-2.5 py-1 text-[11px] text-faint hover:bg-danger-soft/50 hover:text-danger"
             >
               Delete
             </button>
@@ -206,15 +203,15 @@ export function LinkCard({ link, projectOptions, onUpdate, onDelete, onFilter }:
   }
 
   return (
-    <article className="rounded-lg border border-violet-500/20 bg-zinc-900/50 px-4 py-3">
+    <article className="rounded-lg border border-accent/20 bg-surface/50 px-4 py-3">
       <div className="mb-3 flex items-center justify-between gap-2">
-        <span className="text-[10px] font-medium uppercase tracking-wide text-violet-400/80">
+        <span className="text-[10px] font-medium uppercase tracking-wide text-accent-foreground/80">
           Editing
         </span>
         <button
           type="button"
           onClick={finishEditing}
-          className="rounded-md px-2 py-1 text-[11px] text-zinc-400 hover:bg-zinc-800 hover:text-zinc-200"
+          className="rounded-md px-2 py-1 text-[11px] text-muted hover:bg-border hover:text-foreground-secondary"
         >
           Done
         </button>
@@ -224,7 +221,7 @@ export function LinkCard({ link, projectOptions, onUpdate, onDelete, onFilter }:
         href={link.url}
         target="_blank"
         rel="noopener noreferrer"
-        className="mb-3 block truncate text-xs text-zinc-600 hover:text-violet-300"
+        className="mb-3 block truncate text-xs text-faint hover:text-accent-foreground"
       >
         {link.url}
       </a>
@@ -258,7 +255,7 @@ export function LinkCard({ link, projectOptions, onUpdate, onDelete, onFilter }:
 
         <label className="block sm:col-span-2">
           <span className={labelClass}>Project</span>
-          <p className="mb-1.5 text-[10px] text-zinc-600">
+          <p className="mb-1.5 text-[10px] text-faint">
             Choose existing · or enter a new name below
           </p>
           <select

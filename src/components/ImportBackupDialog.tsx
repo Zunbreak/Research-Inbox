@@ -65,7 +65,7 @@ export function ImportBackupDialog({
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4"
+      className="fixed inset-0 z-50 flex items-center justify-center bg-overlay/60 p-4"
       role="presentation"
       onClick={handleBackdropClick}
     >
@@ -73,20 +73,20 @@ export function ImportBackupDialog({
         role="dialog"
         aria-labelledby="import-backup-title"
         aria-modal="true"
-        className="w-full max-w-sm rounded-lg border border-zinc-800/80 bg-zinc-950 p-4 shadow-xl shadow-black/50"
+        className="w-full max-w-sm rounded-lg border border-border/80 bg-surface-elevated p-4 shadow-xl shadow-overlay/50"
         onClick={(event) => event.stopPropagation()}
       >
         {result ? (
           <>
-            <h2 id="import-backup-title" className="text-sm font-medium text-zinc-100">
+            <h2 id="import-backup-title" className="text-sm font-medium text-foreground">
               Import backup
             </h2>
             <div className="mt-3 space-y-4">
-              <p className="text-xs text-emerald-400/90">{formatImportResult(result)}</p>
+              <p className="text-xs text-success/90">{formatImportResult(result)}</p>
               <button
                 type="button"
                 onClick={onDone}
-                className="w-full rounded-md border border-zinc-700 bg-zinc-900 px-3 py-2 text-xs text-zinc-200 hover:bg-zinc-800"
+                className="w-full rounded-md border border-border-strong bg-surface px-3 py-2 text-xs text-foreground-secondary hover:bg-border"
               >
                 Done
               </button>
@@ -94,10 +94,10 @@ export function ImportBackupDialog({
           </>
         ) : confirmReplace ? (
           <>
-            <h2 id="import-backup-title" className="text-sm font-medium text-zinc-100">
+            <h2 id="import-backup-title" className="text-sm font-medium text-foreground">
               Replace entire inbox?
             </h2>
-            <p className="mt-2 text-xs leading-relaxed text-zinc-400">
+            <p className="mt-2 text-xs leading-relaxed text-muted">
               This will replace your current {currentLabel} with {backupLabel} from this backup.
               This cannot be undone unless you have another backup.
             </p>
@@ -106,7 +106,7 @@ export function ImportBackupDialog({
                 type="button"
                 disabled={busy}
                 onClick={() => setConfirmReplace(false)}
-                className="w-full rounded-md border border-zinc-700 bg-zinc-900 px-3 py-2 text-xs text-zinc-200 hover:bg-zinc-800 disabled:opacity-50"
+                className="w-full rounded-md border border-border-strong bg-surface px-3 py-2 text-xs text-foreground-secondary hover:bg-border disabled:opacity-50"
               >
                 Cancel
               </button>
@@ -114,7 +114,7 @@ export function ImportBackupDialog({
                 type="button"
                 disabled={busy}
                 onClick={onReplace}
-                className="w-full rounded-md border border-red-500/40 bg-red-500/10 px-3 py-2 text-xs font-medium text-red-200 hover:bg-red-500/20 disabled:opacity-50"
+                className="w-full rounded-md border border-danger/40 bg-danger/10 px-3 py-2 text-xs font-medium text-danger-foreground hover:bg-danger/20 disabled:opacity-50"
               >
                 Replace {backupLinkCount} links
               </button>
@@ -122,26 +122,26 @@ export function ImportBackupDialog({
           </>
         ) : (
           <>
-            <h2 id="import-backup-title" className="text-sm font-medium text-zinc-100">
+            <h2 id="import-backup-title" className="text-sm font-medium text-foreground">
               Import backup
             </h2>
 
             {error && backupLinkCount === 0 ? (
               <div className="mt-3 space-y-4">
-                <p className="text-xs text-red-400/90" role="alert">
+                <p className="text-xs text-danger/90" role="alert">
                   {error}
                 </p>
                 <button
                   type="button"
                   onClick={onCancel}
-                  className="w-full rounded-md px-3 py-2 text-xs text-zinc-500 hover:text-zinc-300"
+                  className="w-full rounded-md px-3 py-2 text-xs text-subtle hover:text-foreground-tertiary"
                 >
                   Cancel
                 </button>
               </div>
             ) : (
               <>
-                <p className="mt-2 text-xs leading-relaxed text-zinc-400">
+                <p className="mt-2 text-xs leading-relaxed text-muted">
                   {backupLabel} found in this backup.
                 </p>
 
@@ -150,10 +150,10 @@ export function ImportBackupDialog({
                     type="button"
                     disabled={busy}
                     onClick={onMerge}
-                    className="w-full rounded-md border border-violet-500/40 bg-violet-500/10 px-3 py-2 text-left text-xs text-violet-100 hover:bg-violet-500/20 disabled:opacity-50"
+                    className="w-full rounded-md border border-accent/40 bg-accent/10 px-3 py-2 text-left text-xs text-foreground hover:bg-accent/20 disabled:opacity-50"
                   >
                     <span className="font-medium">Merge</span>
-                    <span className="mt-0.5 block text-[11px] text-violet-200/70">
+                    <span className="mt-0.5 block text-[11px] text-accent-foreground-soft/70">
                       Add only links that are not already in the inbox
                     </span>
                   </button>
@@ -161,10 +161,10 @@ export function ImportBackupDialog({
                     type="button"
                     disabled={busy}
                     onClick={() => setConfirmReplace(true)}
-                    className="w-full rounded-md border border-zinc-700 bg-zinc-900 px-3 py-2 text-left text-xs text-zinc-300 hover:bg-zinc-800 disabled:opacity-50"
+                    className="w-full rounded-md border border-border-strong bg-surface px-3 py-2 text-left text-xs text-foreground-tertiary hover:bg-border disabled:opacity-50"
                   >
                     <span className="font-medium">Replace all</span>
-                    <span className="mt-0.5 block text-[11px] text-zinc-500">
+                    <span className="mt-0.5 block text-[11px] text-subtle">
                       Replace the current inbox with this backup
                     </span>
                   </button>
@@ -172,7 +172,7 @@ export function ImportBackupDialog({
                     type="button"
                     disabled={busy}
                     onClick={onCancel}
-                    className="w-full rounded-md px-3 py-2 text-xs text-zinc-500 hover:text-zinc-300 disabled:opacity-50"
+                    className="w-full rounded-md px-3 py-2 text-xs text-subtle hover:text-foreground-tertiary disabled:opacity-50"
                   >
                     Cancel
                   </button>

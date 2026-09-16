@@ -7,8 +7,8 @@ body {
   width: 320px;
   padding: 14px;
   font: 13px/1.4 system-ui, -apple-system, 'Segoe UI', sans-serif;
-  background: #0a0a0b;
-  color: #e4e4e7;
+  background: var(--background);
+  color: var(--foreground-secondary);
 }
 
 header h1 {
@@ -20,7 +20,7 @@ header h1 {
 #page-preview {
   margin: 0 0 12px;
   font-size: 11px;
-  color: #71717a;
+  color: var(--subtle);
   word-break: break-word;
 }
 
@@ -36,13 +36,13 @@ header h1 {
   font-weight: 600;
   letter-spacing: 0.04em;
   text-transform: uppercase;
-  color: #71717a;
+  color: var(--subtle);
 }
 
 .field-hint {
   margin: -2px 0 6px;
   font-size: 10px;
-  color: #52525b;
+  color: var(--faint);
 }
 
 input,
@@ -56,10 +56,10 @@ input,
 select,
 textarea {
   width: 100%;
-  border: 1px solid #3f3f46;
+  border: 1px solid var(--border-strong);
   border-radius: 6px;
-  background: #09090b;
-  color: #e4e4e7;
+  background: var(--surface-elevated);
+  color: var(--foreground-secondary);
   padding: 7px 8px;
 }
 
@@ -74,7 +74,7 @@ textarea {
   gap: 8px;
   margin: 10px 0;
   font-size: 12px;
-  color: #a1a1aa;
+  color: var(--muted);
 }
 
 .checkbox input {
@@ -84,9 +84,9 @@ textarea {
 .selected-text-preview {
   margin: 0 0 10px;
   padding: 8px 10px;
-  border-left: 2px solid rgba(139, 92, 246, 0.4);
+  border-left: 2px solid color-mix(in oklab, var(--accent) 40%, transparent);
   border-radius: 0 6px 6px 0;
-  background: rgba(76, 29, 149, 0.15);
+  background: color-mix(in oklab, var(--accent-soft) 20%, transparent);
 }
 
 .selected-text-preview.hidden {
@@ -99,7 +99,7 @@ textarea {
   font-weight: 600;
   letter-spacing: 0.04em;
   text-transform: uppercase;
-  color: rgba(167, 139, 250, 0.7);
+  color: color-mix(in oklab, var(--accent-foreground) 70%, transparent);
 }
 
 .selected-text-body {
@@ -107,7 +107,7 @@ textarea {
   font-size: 12px;
   font-style: italic;
   line-height: 1.45;
-  color: #a1a1aa;
+  color: var(--muted);
   display: -webkit-box;
   -webkit-line-clamp: 4;
   -webkit-box-orient: vertical;
@@ -117,7 +117,7 @@ textarea {
 .meta-preview {
   margin: 0 0 10px;
   font-size: 11px;
-  color: #52525b;
+  color: var(--faint);
   max-height: 56px;
   overflow: hidden;
 }
@@ -129,15 +129,15 @@ textarea {
 }
 
 .status.ok {
-  color: #34d399;
+  color: var(--success);
 }
 
 .status.warn {
-  color: #fbbf24;
+  color: var(--warning);
 }
 
 .status.error {
-  color: #f87171;
+  color: var(--danger);
 }
 
 #save-btn {
@@ -145,14 +145,14 @@ textarea {
   border: none;
   border-radius: 6px;
   padding: 10px 12px;
-  background: #7c3aed;
+  background: var(--accent);
   color: white;
   font-weight: 600;
   cursor: pointer;
 }
 
 #save-btn:hover {
-  background: #6d28d9;
+  background: var(--accent-hover);
 }
 
 #save-btn:disabled {
@@ -163,16 +163,16 @@ textarea {
 .secondary-btn {
   width: 100%;
   margin-top: 8px;
-  border: 1px solid #3f3f46;
+  border: 1px solid var(--border-strong);
   border-radius: 6px;
   padding: 8px 12px;
   background: transparent;
-  color: #a1a1aa;
+  color: var(--muted);
   font-weight: 500;
   cursor: pointer;
 }
 
 .secondary-btn:hover {
-  border-color: #52525b;
-  color: #e4e4e7;
+  border-color: var(--faint);
+  color: var(--foreground-secondary);
 }

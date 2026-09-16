@@ -1,0 +1,34 @@
+/* Synced from src/theme/tokens.css via assemble-extension.mjs */
+
+/* Phase 1: dark only. Full rgb() values — Tailwind v4 @theme inline does not resolve <alpha-value> on channel tokens. */
+
+:root[data-theme='dark'] {
+  --background: rgb(10 10 11);
+  --surface: rgb(24 24 27);
+  --surface-elevated: rgb(9 9 11);
+  --border: rgb(39 39 42);
+  --border-strong: rgb(63 63 70);
+
+  --foreground: rgb(244 244 245);
+  --foreground-secondary: rgb(228 228 231);
+  --foreground-tertiary: rgb(212 212 216);
+  --muted: rgb(161 161 170);
+  --subtle: rgb(113 113 122);
+  --faint: rgb(82 82 91);
+
+  --accent: rgb(124 58 237);
+  --accent-hover: rgb(139 92 246);
+  --accent-soft: rgb(46 16 101);
+  --accent-foreground: rgb(196 181 253);
+  --accent-foreground-soft: rgb(221 214 254);
+
+  --success: rgb(52 211 153);
+  --warning: rgb(251 191 36);
+  --danger: rgb(248 113 113);
+  --danger-foreground: rgb(254 202 202);
+  --danger-soft: rgb(69 10 10);
+
+  --overlay: rgb(0 0 0);
+
+  --scrollbar-thumb: #3f3f46;
+}
