@@ -80,7 +80,7 @@ export function FilterPicker({
         onClick={() => setOpen((current) => !current)}
         className={`flex items-center gap-1.5 rounded-md border px-2.5 py-1.5 text-xs transition-colors ${
           value
-            ? 'border-accent/40 bg-accent-soft/30 text-accent-foreground-soft'
+            ? 'border-filter-active-border bg-filter-active-bg text-filter-active-text'
             : 'border-border-strong/60 bg-surface/60 text-muted hover:border-faint hover:text-foreground-secondary'
         }`}
       >
@@ -125,7 +125,7 @@ export function FilterPicker({
                   onClick={() => handleSelect(option.value)}
                   className={`flex w-full items-center justify-between rounded px-2 py-1.5 text-left text-xs transition-colors ${
                     option.value === value
-                      ? 'bg-accent/20 text-accent-foreground-soft'
+                      ? 'bg-sidebar-active-bg text-sidebar-active-text'
                       : 'text-foreground-tertiary hover:bg-surface'
                   }`}
                 >

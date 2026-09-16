@@ -24,6 +24,19 @@
   --color-danger-foreground: var(--danger-foreground);
   --color-danger-soft: var(--danger-soft);
   --color-overlay: var(--overlay);
+  --color-selected-text-bg: var(--selected-text-bg);
+  --color-selected-text-border: var(--selected-text-border);
+  --color-selected-text-label: var(--selected-text-label);
+  --color-sidebar-active-bg: var(--sidebar-active-bg);
+  --color-sidebar-active-text: var(--sidebar-active-text);
+  --color-filter-active-bg: var(--filter-active-bg);
+  --color-filter-active-border: var(--filter-active-border);
+  --color-filter-active-text: var(--filter-active-text);
+  --color-project-chip-bg: var(--project-chip-bg);
+  --color-project-chip-text: var(--project-chip-text);
+  --color-project-chip-hover: var(--project-chip-hover);
+  --color-danger-surface-bg: var(--danger-surface-bg);
+  --color-danger-surface-border: var(--danger-surface-border);
 }
 
 body {

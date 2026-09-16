@@ -84,9 +84,9 @@ textarea {
 .selected-text-preview {
   margin: 0 0 10px;
   padding: 8px 10px;
-  border-left: 2px solid color-mix(in oklab, var(--accent) 40%, transparent);
+  border-left: 2px solid var(--selected-text-border);
   border-radius: 0 6px 6px 0;
-  background: color-mix(in oklab, var(--accent-soft) 20%, transparent);
+  background: var(--selected-text-bg);
 }
 
 .selected-text-preview.hidden {
@@ -99,7 +99,7 @@ textarea {
   font-weight: 600;
   letter-spacing: 0.04em;
   text-transform: uppercase;
-  color: color-mix(in oklab, var(--accent-foreground) 70%, transparent);
+  color: var(--selected-text-label);
 }
 
 .selected-text-body {

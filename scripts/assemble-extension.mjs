@@ -36,6 +36,7 @@ if (fs.existsSync(themeTokensSrc)) {
 
 copyIfExists(path.join(root, 'extension', 'manifest.prod.json'), path.join(outDir, 'manifest.json'))
 copyIfExists(path.join(root, 'extension', 'popup.css'), path.join(outDir, 'popup.css'))
+copyIfExists(path.join(root, 'extension', 'theme-init.js'), path.join(outDir, 'theme-init.js'))
 copyDirIfExists(path.join(root, 'extension', 'icons'), path.join(outDir, 'icons'))
 
 function fixExtensionAssetPaths(html) {

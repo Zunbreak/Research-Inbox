@@ -6,6 +6,7 @@ import { FilterSidebar } from './components/FilterSidebar'
 import { LinkList } from './components/LinkList'
 import { PastePanel } from './components/PastePanel'
 import { SearchBar } from './components/SearchBar'
+import { ThemeSelector } from './components/ThemeSelector'
 import { useLinks } from './hooks/useLinks'
 
 export default function App() {
@@ -57,12 +58,13 @@ export default function App() {
             <h1 className="text-lg font-semibold tracking-tight text-foreground">Research Inbox</h1>
             <p className="text-sm text-subtle">Capture now. Find later. Close the tabs.</p>
           </div>
-          <div className="flex flex-wrap items-center gap-2">
+          <div className="flex flex-wrap items-center justify-end gap-x-3 gap-y-2">
             <BackupStatus
               state={backupState}
               lastBackupAt={lastBackupAt}
               storageMode={storageMode}
             />
+            <ThemeSelector />
             <BackupMenu
               onExport={exportBackup}
               onImport={importJson}

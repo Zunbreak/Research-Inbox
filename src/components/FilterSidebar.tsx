@@ -30,7 +30,7 @@ function FilterButton({
       onClick={onClick}
       className={`flex w-full items-center justify-between rounded px-2 py-1.5 text-left text-xs transition-colors ${
         active
-          ? 'bg-accent/20 text-accent-foreground-soft'
+          ? 'bg-sidebar-active-bg text-sidebar-active-text'
           : 'text-muted hover:bg-border hover:text-foreground-secondary'
       }`}
     >

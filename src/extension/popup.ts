@@ -1,4 +1,12 @@
 import { DEFAULT_PROJECT } from '../constants.ts'
+import {
+  applyTheme,
+  bootstrapTheme,
+  loadThemePreference,
+  readStoredPreference,
+  subscribeToSystemTheme,
+  subscribeToThemePreferenceChanges,
+} from '../theme/theme.ts'
 import { addCapturedLink, sortLinksByCapturedAt } from '../lib/capture.ts'
 import { parseCaptureLinkInput } from '../lib/validation.ts'
 import { mutateChromePayload, readChromePayload } from '../storage/payload.ts'
@@ -46,6 +54,14 @@ void init()
 async function init() {
   openInboxBtn.addEventListener('click', () => {
     void chrome.tabs.create({ url: chrome.runtime.getURL('inbox.html') })
+  })
+
+  await bootstrapTheme()
+  subscribeToSystemTheme(() => {
+    if (readStoredPreference() === 'system') applyTheme('system')
+  })
+  subscribeToThemePreferenceChanges(() => {
+    void loadThemePreference().then(applyTheme)
   })
 
   await loadProjectOptions()

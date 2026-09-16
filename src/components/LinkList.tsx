@@ -52,7 +52,7 @@ export function LinkList({
         <p className="mb-8 text-sm text-subtle">Save links, selected text, and notes — find them later by search.</p>
         <ol className="mx-auto max-w-md space-y-4 text-left text-sm text-muted">
           <li className="flex gap-3">
-            <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-accent-soft/60 text-xs font-medium text-accent-foreground">
+            <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-project-chip-bg text-xs font-medium text-project-chip-text">
               1
             </span>
             <span>
@@ -60,7 +60,7 @@ export function LinkList({
             </span>
           </li>
           <li className="flex gap-3">
-            <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-accent-soft/60 text-xs font-medium text-accent-foreground">
+            <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-project-chip-bg text-xs font-medium text-project-chip-text">
               2
             </span>
             <span>
@@ -68,7 +68,7 @@ export function LinkList({
             </span>
           </li>
           <li className="flex gap-3">
-            <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-accent-soft/60 text-xs font-medium text-accent-foreground">
+            <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-project-chip-bg text-xs font-medium text-project-chip-text">
               3
             </span>
             <span>

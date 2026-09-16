@@ -75,7 +75,7 @@ export function LinkCard({ link, projectOptions, onUpdate, onDelete, onFilter }:
     link.status === 'archive'
       ? 'border-border/40 bg-surface/10 opacity-80'
       : link.status === 'trash'
-        ? 'border-danger-soft/40 bg-danger-soft/5 opacity-75'
+        ? 'border-danger-surface-border bg-danger-surface-bg opacity-75'
         : 'border-border/60 bg-surface/20'
 
   if (!editing) {
@@ -116,13 +116,13 @@ export function LinkCard({ link, projectOptions, onUpdate, onDelete, onFilter }:
                   <button
                     type="button"
                     onClick={() => onFilter({ project: link.project })}
-                    className={`${chipButtonClass} bg-accent-soft/60 text-accent-foreground hover:bg-accent-soft/90`}
+                    className={`${chipButtonClass} bg-project-chip-bg text-project-chip-text hover:bg-project-chip-hover`}
                     title={`Filter by ${link.project}`}
                   >
                     {link.project}
                   </button>
                 ) : (
-                  <span className={`${chipClass} bg-accent-soft/60 text-accent-foreground`}>
+                  <span className={`${chipClass} bg-project-chip-bg text-project-chip-text`}>
                     {link.project}
                   </span>
                 ))}
@@ -160,8 +160,8 @@ export function LinkCard({ link, projectOptions, onUpdate, onDelete, onFilter }:
             </div>
 
             {selectedText && (
-              <div className="mb-2 rounded-md border-l-2 border-accent/40 bg-accent-soft/20 px-3 py-2">
-                <p className="mb-1 text-[10px] font-medium uppercase tracking-wide text-accent-foreground/70">
+              <div className="mb-2 rounded-md border-l-2 border-selected-text-border bg-selected-text-bg px-3 py-2">
+                <p className="mb-1 text-[10px] font-medium uppercase tracking-wide text-selected-text-label">
                   Selected text
                 </p>
                 <p className="line-clamp-3 text-sm italic leading-relaxed text-muted">
