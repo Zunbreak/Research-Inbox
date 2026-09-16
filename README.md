@@ -10,9 +10,9 @@ This saves the reason a page mattered.**
 
 **Search by what you remember, not what you bookmarked.**
 
-Highlight the part that mattered when you save a page. Later, search for the fragment you remember — even if you forgot the site or URL.
+Highlight the part that mattered when you save a page. Later, search for the fragment you remember, even if you forgot the site or URL.
 
-![Research Inbox — capture, organise, and search saved pages](docs/screenshots/hero-inbox-demo.png)
+![Research Inbox: capture, organise, and search saved pages](docs/screenshots/hero-inbox-demo.png)
 
 Local-first browser research.  
 No account. No cloud. No AI required.
@@ -31,23 +31,23 @@ By **Zunbreak**.
 2. Click **Z**
 3. Add project, tags, or a note
 4. **Save to Inbox**
-5. Search for it later — by the words you highlighted, not the URL you forgot
+5. Search for it later by the words you highlighted, not the URL you forgot
 
 ### Search what you remember
 
-You do not need to remember which site you saved. Remember a phrase from what you read — Research Inbox finds the page from the selected text you kept.
+You do not need to remember which site you saved. Remember a phrase from what you read. Research Inbox finds the page from the selected text you kept.
 
-![Search finds saved selected text — demo query matches a highlighted fragment from weeks ago](docs/screenshots/03-search-selected-text.png)
+![Search finds saved selected text: demo query matches a highlighted fragment from weeks ago](docs/screenshots/03-search-selected-text.png)
 
 ### Full inbox overview
 
 ![Full inbox with projects, tags, selected text, and demo links](docs/screenshots/02-inbox-overview.png)
 
-<!-- Capture popup — add when 01-capture-popup.png exists (manual capture; synthetic demo data only)
+<!-- Capture popup: add when 01-capture-popup.png exists (manual capture; synthetic demo data only)
 ![Highlight text and save from the popup](docs/screenshots/01-capture-popup.png)
 -->
 
-Demo data only in screenshots — see [docs/screenshots/README.md](docs/screenshots/README.md).
+Demo data only in screenshots. See [docs/screenshots/README.md](docs/screenshots/README.md).
 
 ---
 
@@ -56,7 +56,7 @@ Demo data only in screenshots — see [docs/screenshots/README.md](docs/screensh
 Bookmarks save links. Research Inbox saves **context**:
 
 - why you saved the page
-- the sentence you highlighted — searchable later, even when the URL is not
+- the sentence you highlighted, searchable later, even when the URL is not
 - project and tags for later filtering
 - searchable page metadata (title, description, headings)
 
@@ -71,7 +71,7 @@ I built this because 200 open tabs aren't a research system.
 - URL, title, and domain
 - Meta description and Open Graph text (when present)
 - Headings (h1/h2) for extra keywords
-- **Selected text** — highlight first, then save
+- **Selected text**: highlight first, then save
 - Your note, project, and tags
 
 **From the inbox** (paste panel):
@@ -86,7 +86,7 @@ Paste works without the extension (URL only). The extension adds rich page conte
 ## Search & organisation
 
 - Search by what you remember: selected text, notes, headings, tags, project, URL, and domain
-- Find a saved page from a fragment you recall — you do not need to remember where you found it
+- Find a saved page from a fragment you recall. You do not need to remember where you found it
 - Filter by status (Inbox / Archive / Trash), project, tag, and domain
 - URL fragments treated as distinct links (`page#SectionA` ≠ `page#SectionB`)
 
@@ -96,8 +96,8 @@ Paste works without the extension (URL only). The extension adds rich page conte
 
 Your inbox lives locally. Export a JSON backup anytime from **Backup & Restore** in the inbox.
 
-- **Export backup** — download a portable copy; tracks last export time locally
-- **Import backup** — **Merge** (add new links only, idempotent) or **Replace all** (destructive, requires confirmation)
+- **Export backup**: download a portable copy; tracks last export time locally
+- **Import backup**: **Merge** (add new links only, idempotent) or **Replace all** (destructive, requires confirmation)
 
 No cloud sync. If you uninstall the extension or lose a browser profile, your backup file is the restore path.
 
@@ -110,13 +110,13 @@ No cloud sync. If you uninstall the extension or lose a browser profile, your ba
 - Extension reads the active tab **only when you click Save**
 - No AI required; no API keys in the extension
 
-**Where data is stored depends on how you run it** (see below). Private inbox files are gitignored — never commit your saved links.
+**Where data is stored depends on how you run it** (see below). Private inbox files are gitignored. Never commit your saved links.
 
 ---
 
 ## Use it your way
 
-Three ways to run the same product — pick one:
+Three ways to run the same product. Pick one:
 
 | | Browser Extension | Build from source | Developer Mode |
 |---|---|---|---|
@@ -137,7 +137,7 @@ The standalone extension and developer app share the same inbox UI and link sche
 
 Research Inbox is **not published in the Chrome Web Store yet**. Chrome Web Store distribution is planned; until then, install the standalone build manually from a GitHub Release.
 
-**[Download Browser Extension (v1.1.0)](https://github.com/Zunbreak/research-inbox/releases/download/v1.1.0/zunbreak-research-inbox-v1.1.0-chromium.zip)** — extract the ZIP, then follow [manual installation](#manual-installation-from-release-zip) below.
+**[Download Browser Extension (v1.1.0)](https://github.com/Zunbreak/research-inbox/releases/download/v1.1.0/zunbreak-research-inbox-v1.1.0-chromium.zip)**. Extract the ZIP, then follow [manual installation](#manual-installation-from-release-zip) below.
 
 [Release notes for v1.1.0](https://github.com/Zunbreak/research-inbox/releases/tag/v1.1.0) · [All releases](https://github.com/Zunbreak/research-inbox/releases)
 
@@ -151,7 +151,7 @@ Developers can also [build the extension from source](#build-standalone-extensio
 4. Click **Load unpacked**
 5. Select the **extracted extension folder** (not the ZIP itself)
 6. Pin **Zunbreak Research Inbox**
-7. Done — browse → click **Z** → **Save to Inbox** → **Open Inbox**
+7. Done. Browse → click **Z** → **Save to Inbox** → **Open Inbox**
 
 No `npm run dev`. No localhost. Data stays in your browser profile.
 
@@ -176,7 +176,7 @@ Re-run `npm run build:extension` after pulling updates.
 
 ## Run Developer Mode
 
-For development and hacking on the project — **not** the normal way to use Research Inbox.
+For development and hacking on the project, **not** the normal way to use Research Inbox.
 
 ```bash
 git clone https://github.com/Zunbreak/research-inbox.git

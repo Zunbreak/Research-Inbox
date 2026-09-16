@@ -73,7 +73,7 @@ export function PastePanel({
       >
         <div className="min-w-0">
           <span className="text-sm font-semibold text-foreground-secondary">Capture</span>
-          <span className="ml-2 text-xs text-faint">Paste URLs — one per line</span>
+          <span className="ml-2 text-xs text-faint">Paste URLs, one per line</span>
         </div>
         <CollapseToggle expanded={true} />
       </button>

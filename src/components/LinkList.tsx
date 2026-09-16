@@ -49,7 +49,7 @@ export function LinkList({
     return (
       <div className="rounded-lg border border-dashed border-border/60 bg-surface/10 px-6 py-12 text-center">
         <p className="mb-1 text-base font-medium text-foreground-tertiary">Your inbox is empty</p>
-        <p className="mb-8 text-sm text-subtle">Save links, selected text, and notes — find them later by search.</p>
+        <p className="mb-8 text-sm text-subtle">Save links, selected text, and notes, then find them later by search.</p>
         <ol className="mx-auto max-w-md space-y-4 text-left text-sm text-muted">
           <li className="flex gap-3">
             <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-project-chip-bg text-xs font-medium text-project-chip-text">
@@ -64,7 +64,7 @@ export function LinkList({
               2
             </span>
             <span>
-              <strong className="font-medium text-foreground-tertiary">Highlight text</strong> on a page before you save — that becomes searchable later.
+              <strong className="font-medium text-foreground-tertiary">Highlight text</strong> on a page before you save. That becomes searchable later.
             </span>
           </li>
           <li className="flex gap-3">
@@ -72,7 +72,7 @@ export function LinkList({
               3
             </span>
             <span>
-              <strong className="font-medium text-foreground-tertiary">Search</strong> by words you remember — not the URL.
+              <strong className="font-medium text-foreground-tertiary">Search</strong> by words you remember, not the URL.
             </span>
           </li>
         </ol>

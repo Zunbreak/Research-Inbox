@@ -306,7 +306,7 @@ export function LinkCard({ link, projectOptions, onUpdate, onDelete, onFilter }:
           <textarea
             value={link.whySaved}
             onChange={(e) => onUpdate(link.id, { whySaved: e.target.value })}
-            placeholder="Why this matters — this is what you'll search for later"
+            placeholder="Why this matters. This is what you'll search for later"
             rows={2}
             className={inputClass}
           />
@@ -317,7 +317,7 @@ export function LinkCard({ link, projectOptions, onUpdate, onDelete, onFilter }:
           <textarea
             value={link.selectedText ?? ''}
             onChange={(e) => onUpdate(link.id, { selectedText: e.target.value })}
-            placeholder="Highlighted text from the page — searchable later"
+            placeholder="Highlighted text from the page, searchable later"
             rows={3}
             className={inputClass}
           />

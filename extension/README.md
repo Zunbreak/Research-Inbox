@@ -1,4 +1,4 @@
-# Zunbreak Research Inbox — Browser Extension
+# Zunbreak Research Inbox: Browser Extension
 
 Save the current Brave/Chrome tab to your local inbox with page metadata.
 
@@ -17,7 +17,7 @@ Save the current Brave/Chrome tab to your local inbox with page metadata.
 3. Click the extension icon
 4. Add project / tags / why saved (optional)
 5. Click **Save to Inbox**
-6. Open http://localhost:5173 — link appears (refresh or refocus tab)
+6. Open http://localhost:5173. Link appears (refresh or refocus tab)
 
 ## Requirements
 
@@ -26,10 +26,10 @@ Save the current Brave/Chrome tab to your local inbox with page metadata.
 
 ## Permissions
 
-- `activeTab` — read the current tab only when you click the extension
-- `scripting` — capture meta tags, headings, and highlighted text from the page
-- `storage` — remember your last project/tags preferences
-- `localhost:5173` — send captures to your local inbox only
+- `activeTab`: read the current tab only when you click the extension
+- `scripting`: capture meta tags, headings, and highlighted text from the page
+- `storage`: remember your last project/tags preferences
+- `localhost:5173`: send captures to your local inbox only
 
 Highlight text, then open the popup right away. Selection is read via `activeTab` when you click (including embedded frames on supported pages).
 

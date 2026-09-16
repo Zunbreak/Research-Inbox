@@ -1,6 +1,6 @@
 # Screenshot assets for README
 
-Use **synthetic demo data only** — never real or private inbox links.
+Use **synthetic demo data only**. Never real or private inbox links.
 
 ## Planned demo inbox (8–12 example links)
 
@@ -33,8 +33,8 @@ Suggested search phrase for shot 03: `local-first software keeps data on the dev
 
 Optional later:
 
-- `backup-restore-menu.png` — Backup & Restore dropdown with Last exported
-- `import-merge-dialog.png` — Import backup merge choice
+- `backup-restore-menu.png`: Backup & Restore dropdown with Last exported
+- `import-merge-dialog.png`: Import backup merge choice
 
 ## Capture environment
 
