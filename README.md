@@ -137,15 +137,15 @@ The standalone extension and developer app share the same inbox UI and link sche
 
 Research Inbox is **not published in the Chrome Web Store yet**. Chrome Web Store distribution is planned; until then, install the standalone build manually from a GitHub Release.
 
-**[Download Browser Extension (v1.0.0)](https://github.com/Zunbreak/research-inbox/releases/download/v1.0.0/zunbreak-research-inbox-v1.0.0-chromium.zip)** — extract the ZIP, then follow [manual installation](#manual-installation-from-release-zip) below.
+**[Download Browser Extension (v1.1.0)](https://github.com/Zunbreak/research-inbox/releases/download/v1.1.0/zunbreak-research-inbox-v1.1.0-chromium.zip)** — extract the ZIP, then follow [manual installation](#manual-installation-from-release-zip) below.
 
-[Release notes for v1.0.0](https://github.com/Zunbreak/research-inbox/releases/tag/v1.0.0) · [All releases](https://github.com/Zunbreak/research-inbox/releases)
+[Release notes for v1.1.0](https://github.com/Zunbreak/research-inbox/releases/tag/v1.1.0) · [All releases](https://github.com/Zunbreak/research-inbox/releases)
 
 Developers can also [build the extension from source](#build-standalone-extension-from-source).
 
 ### Manual installation (from release ZIP)
 
-1. Download [zunbreak-research-inbox-v1.0.0-chromium.zip](https://github.com/Zunbreak/research-inbox/releases/download/v1.0.0/zunbreak-research-inbox-v1.0.0-chromium.zip) and extract it
+1. Download [zunbreak-research-inbox-v1.1.0-chromium.zip](https://github.com/Zunbreak/research-inbox/releases/download/v1.1.0/zunbreak-research-inbox-v1.1.0-chromium.zip) and extract it
 2. Open `chrome://extensions` or `brave://extensions`
 3. Enable **Developer mode**
 4. Click **Load unpacked**
